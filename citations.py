@@ -22,14 +22,15 @@ def select_type(event):
             widget.grid(row=i, column=j)
 
 
+def select_style(event):
+    pass
+
+
 root = tk.Tk()
 root.geometry(f"960x720")
 
-frm = tk.ttk.Frame(root, padding=10)
-frm.grid()
-
-test = tk.Label(frm, text="citation generator")
-test.grid(row=0, column=0)
+general = tk.Frame(root)
+general.grid(row=1, column=0)
 
 fields = tk.Frame(root)
 fields.grid(row=8, column=0)
@@ -45,6 +46,12 @@ sourcetypes = {
          tk.Entry(fields)],
 
         [tk.Label(fields, text="Publisher"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="Edition"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="Volume"),
          tk.Entry(fields)],
 
         [tk.Label(fields, text="DOI"),
@@ -141,7 +148,7 @@ sourcetypes = {
         [tk.Label(fields, text="Medium"),
          tk.Entry(fields)],
 
-        [tk.Label(fields, text="Location/source"),
+        [tk.Label(fields, text="Location"),
          tk.Entry(fields)],
 
         [tk.Label(fields, text="City"),
@@ -150,67 +157,151 @@ sourcetypes = {
          tk.Entry(fields)]
     ],
 
+    "Image": [
+        [tk.Label(fields, text="Title or description"),
+         tk.Entry(fields)],
+
+        [tk.Label(fields, text="Medium"),
+         tk.Entry(fields)],
+
+        [tk.Label(fields, text="Website name"),
+         tk.Entry(fields)]
+    ],
+
     "Music": [
-        [tk.Label(fields, text="Location/source"),
+        [tk.Label(fields, text="Title"),
+         tk.Entry(fields)],
+
+        [tk.Label(fields, text="Album or suite"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="Label"),
          tk.Entry(fields)],
     ],
 
     "Podcast": [
+        [tk.Radiobutton(fields, text="Podcast", value="podcast"),
+         tk.Radiobutton(fields, text="Episode", value="episode")],
+        [tk.Label(fields, text="Podcast title"),
+         tk.Entry(fields)],
+
+        [tk.Label(fields, text="Episode title"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="Episode number"),
+         tk.Entry(fields)],
+
+        [tk.Label(fields, text="Year started"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="Year ended"),
+         tk.Entry(fields)],
+
+        [tk.Label(fields, text="Production company"),
+         tk.Entry(fields)],
+
+        [tk.Radiobutton(fields, text="Audio", value="audio"),
+         tk.Radiobutton(fields, text="Video", value="video")],
     ],
 
-    "Speech or interview": [
+    "Presentation": [
+        [tk.Label(fields, text="Title"),
+         tk.Entry(fields)],
+
+        [tk.Label(fields, text="Type of presentation"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="Location"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="City"),
+         tk.Entry(fields),
+         tk.Label(fields, text="Country"),
+         tk.Entry(fields)]
     ],
 
     "Thesis or dissertation": [
+        [tk.Radiobutton(fields, text="Thesis", value="thesis"),
+         tk.Radiobutton(fields, text="Dissertation", value="dissertation")],
+
+        [tk.Label(fields, text="Title"),
+         tk.Entry(fields)],
+
+        [tk.Label(fields, text="Institution"),
+         tk.Entry(fields)],
+
+        [tk.Label(fields, text="Source name"),
+         tk.Entry(fields)],
+
     ],
 
     "Court case": [
-    ],
-
-    "Religious text": [
-    ],
-
-    "Other": [
-    ],
+        [tk.Label(fields, text="Plaintiff"),
+         tk.Entry(fields),
+         tk.Label(fields, text="Defendant"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="Volume number"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="Reporter"),
+         tk.Entry(fields)],
+        
+        [tk.Label(fields, text="Court jurisdiction"),
+         tk.Entry(fields)]
+    ]
 
 }
 
-sourcetype = tk.Listbox(root, listvariable=tk.Variable(value=list(sourcetypes.keys())), selectmode="browse", height=len(sourcetypes), exportselection=False)
+sourcetype = tk.Listbox(general, listvariable=tk.Variable(value=list(sourcetypes.keys())), selectmode="browse", height=len(sourcetypes), exportselection=False)
 sourcetype.bind("<<ListboxSelect>>", select_type)
-sourcetype.grid(row=1, column=0, padx=(50, 20))
+sourcetype.grid(row=1, column=0, padx=40, pady=40)
+
+"""
+style = tk.ttk.Combobox(general, values=["APA", "MLA", "Chicago"])
+style.bind("<<ComboboxSelected>>", select_style)
+style.grid(row=2, column=0)
+"""
 
 
-tk.Label(root, text="Author's first name").grid(row=3, column=2)
-tk.Label(root, text="Author's middle name").grid(row=4, column=2)
-tk.Label(root, text="Author's last name").grid(row=5, column=2)
-tk.Label(root, text="Publication date").grid(row=4, column=4)
-tk.Label(root, text="URL").grid(row=5, column=4)
+tk.Label(general, text="Author's first name").grid(row=3, column=2)
+tk.Label(general, text="Author's middle name").grid(row=4, column=2)
+tk.Label(general, text="Author's last name").grid(row=5, column=2)
+tk.Label(general, text="Author nickname").grid(row=6, column=2)
+tk.Label(general, text="Publication date").grid(row=4, column=4)
+tk.Label(general, text="URL").grid(row=5, column=4)
 
 
-fn = tk.Entry(root)
+fn = tk.Entry(general)
 fn.grid(row=3, column=3)
 
-mn = tk.Entry(root)
+mn = tk.Entry(general)
 mn.grid(row=4, column=3)
 
-ln = tk.Entry(root)
+ln = tk.Entry(general)
 ln.grid(row=5, column=3)
 
-date = tk.Entry(root)
+nn = tk.Entry(general)
+nn.grid(row=6, column=3)
+
+date = tk.Entry(general)
 date.grid(row=4, column=5)
 
-url = tk.Entry(root)
+url = tk.Entry(general)
 url.grid(row=5, column=5)
 
-textframe = tk.Frame(root)
-textframe.grid(row=1, column=9)
+textframe = tk.Frame(general)
+textframe.grid(row=1, column=2)
 
 
 f = tk.Text(textframe, wrap="word", width=20, height=10, state="disabled")
 f.grid(row=0, column=0)
 
-button = tk.Button(root, text="Get Entry Value", command=get_entry)
-button.grid(row=7, column=2)
+style = tk.OptionMenu(textframe, tk.StringVar(general, "blah"), "APA", "MLA", "Chicago")
+style.grid(row=1, column=0, padx=10, pady=10)
+
+button = tk.Button(general, text="Update", command=get_entry)
+button.grid(row=7, column=2, padx=10, pady=10)
 
 
 root.mainloop()
