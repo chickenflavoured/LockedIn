@@ -5,14 +5,16 @@ import sys
 import threading
 
 class Timer:
-    def __init__(self, countdown_time:int, timer_running:bool):
-        self.countdown_time = countdown_time * 60
-        self.timer_running = timer_running
-        self.pause_event = threading.Event
-        self.pause_event.set()
+    """
+    Docstring for Timer
+    """
+    def __init__(self, countdown_time:int):
+        self.countdown_time = countdown_time
+        self.pause_event = threading.Event()
 
     def countdown(self, window):
         
+        self.pause_event.set()
         timer_display = tk.Label(window)
         timer_display.grid(row = 4, column = 4)
         # Main timer loop
@@ -21,11 +23,11 @@ class Timer:
             self.pause_event.wait()
             
             hour = int(self.countdown_time // 3600)
-            min = int(self.countdown_time // 60)
+            min = int((self.countdown_time % 3600) // 60)
             sec = int(self.countdown_time % 60)
             
             # Print amount of time left
-            timer_display.config(text = f"There's {hour}:{min}:{sec} left")
+            timer_display.config(text = f"There's {hour:02d}:{min:02d}:{sec:02d} left")
 
             # Let the second pass
             time.sleep(1)
