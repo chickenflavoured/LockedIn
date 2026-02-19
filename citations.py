@@ -5,9 +5,11 @@ import pyperclip
 
 def get_entry():
     author = f"{ln.get()}, {fn.get()}"
+
     f.config(state="normal")
     f.delete(1.0, tk.END)
     f.insert(1.0, author)
+    f.insert(1.5, mn.get())
     f.config(state="disabled")
 
 
@@ -22,7 +24,16 @@ def select_type(event):
             widget.grid(row=i, column=j)
 
 
+FORMAT = {
+    "name"
+}
+
+
 def select_style(event):
+    pass
+
+
+def render_citation(**kwargs):
     pass
 
 
@@ -36,11 +47,22 @@ fields = tk.Frame(root)
 fields.grid(row=8, column=0)
 
 
+"""
+Every field has
+- Label
+- Entry
+- variable
+
+{"variable": [Label, Entry]}
+"""
+
+
+
 sourcetypes = {
     "Book": [
 
         [tk.Label(fields, text="Title"),
-        tk.Entry(fields)],
+         tk.Entry(fields)],
 
         [tk.Label(fields, text="Subtitle"),
          tk.Entry(fields)],
@@ -297,7 +319,7 @@ textframe.grid(row=1, column=2)
 f = tk.Text(textframe, wrap="word", width=20, height=10, state="disabled")
 f.grid(row=0, column=0)
 
-style = tk.OptionMenu(textframe, tk.StringVar(general, "blah"), "APA", "MLA", "Chicago")
+style = tk.OptionMenu(textframe, tk.StringVar(general, "Style..."), "APA", "MLA", "Chicago")
 style.grid(row=1, column=0, padx=10, pady=10)
 
 button = tk.Button(general, text="Update", command=get_entry)
