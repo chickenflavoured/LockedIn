@@ -1,28 +1,208 @@
 main.py:
 -------
 from tasklist import Task_List, Task
+import tkinter as tk
 
-for i in range(5):
-    Task_List.create_task("AMONG US", "8222" + str(i) + "22222", "08/05/2028", "01/29/2026",)
+# Constants
+WIDTH = 500
+HEIGHT = 400
 
-Task_B = Task("i US", "8222922222", "08/20/2001", "01/29/2026",)
+_ = Task("Finish homeworgfggk", "1234326890", "01/22/2027")
+
+
+for i in range(9):
+    _ = Task("Finish homework", "12345" + str(i) + "6890", "01/22/2027")
+
+root = tk.Tk()
+root.title("Task Window")
+root.geometry(f"{WIDTH}x{HEIGHT}")
+
+# Make root expandable
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
+
+main_frame = tk.Frame(root)
+main_frame.grid(row=0, column=0, sticky="nsew")
+main_frame.columnconfigure(0, weight=1)
+
+# Label
+label = tk.Label(main_frame, text="TASKS", font=("Arial", 24))
+label.grid(row=0, column=0, pady=20)
+
+# --- FRAMES ---
+task_frame = tk.Frame(main_frame)
+task_frame2 = tk.Frame(main_frame)
+task_frame3 = tk.Frame(main_frame)
+task_frame4 = tk.Frame(main_frame)
+
+# Configure columns for centering
+for frame in (task_frame, task_frame2, task_frame3):
+    frame.columnconfigure(0, weight=1)
+
+# --- Scrollable Task List ---
+
+canvas = tk.Canvas(task_frame2, highlightthickness=0, height=150)
+scrollbar = tk.Scrollbar(task_frame2, orient="vertical", command=canvas.yview)
+
+canvas.configure(yscrollcommand=scrollbar.set)
+
+canvas.grid(row=0, column=0, sticky="nsew")
+scrollbar.grid(row=0, column=1, sticky="ns")
+
+task_frame2.columnconfigure(0, weight=1)
+
+scrollable_frame = tk.Frame(canvas)
+canvas_window = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+
+def update_scrollregion(event):
+    canvas.configure(scrollregion=canvas.bbox("all"))
+
+scrollable_frame.bind("<Configure>", update_scrollregion)
+
+def resize_frame(event):
+    canvas.itemconfig(canvas_window, width=event.width)
+
+canvas.bind("<Configure>", resize_frame)
+
+def _on_mousewheel(event):
+    canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+canvas.bind("<Enter>", lambda e: canvas.bind_all("<MouseWheel>", _on_mousewheel))
+canvas.bind("<Leave>", lambda e: canvas.unbind_all("<MouseWheel>"))
+
+if not Task_List.task_list:
+    tk.Label(scrollable_frame, text="YoU HavE No TAsKs :(((((", font=("Arial", 8)).pack(pady=5)
+else:
+    for i in Task_List.task_list:
+        task = i
+        g = f"Task: {i.task_message}, created on {i.date_of_creation}.. Due:{i.deadline}."
+        tk.Button(scrollable_frame, text=g, font=("Arial", 8), command=lambda: task_interface(task)).pack(pady=5)
+
+# --- MENU BUTTONS ---
+
+current_screen = "main"
+
+def handle_menu(button):
+    global current_screen
+    print(current_screen)
+    if button == "main_button":
+
+        if current_screen == "main":
+            task_frame.grid(row=2, column=0, pady=10)
+            exit_button.config(text="back outside the menu", font=("Arial", 12))
+            menu_button.config(text="view tasks")
+            current_screen = "menu"
+
+        elif current_screen == "menu":
+            task_frame.grid_remove()
+            task_frame3.grid(row=2, column=0, pady=10)
+            exit_button.config(text="back to menu", font=("Arial", 12))
+            current_screen = "task_list"
+            menu_button.config(text="View Active Tasks", font=("Arial", 18))
+            task_listlabel.grid(row=1, column=0)
+
+        elif current_screen == "task_list":
+            task_frame3.grid_remove()
+            task_frame2.grid(row=2, column=0, pady=10)
+            current_screen = "active_task_list"
+            menu_button.grid_remove()
+            completed_task_list_button.grid_remove()
+
+    else:
+        if current_screen == "task_list":
+            task_frame3.grid_remove()
+            task_frame2.grid(row=2, column=0, pady=10)
+            current_screen = "completed_task_list"
+            menu_button.grid_remove()
+            completed_task_list_button.grid_remove()
+
+def task_interface(task):
+    global current_screen
     
-for i in Task_List.task_list:
-    print(i)
+    if current_screen == "active_task_list":
+        specific_task = task
+        task_frame2.grid_remove()
+        task_frame4.grid(row=2, column=0, pady=10)
+        current_screen = "within_a_task"
+        task_listlabel.grid_remove()
     
-print("-------")
-for i in Task_List.completed_task_list:
-    print(i)
+def exit_button_choices():
+    global current_screen
+
+    if current_screen == "menu":
+        task_frame.grid_remove()
+        current_screen = "main"
+        exit_button.config(text="EXIT", font=("Arial", 24))
+        menu_button.config(text="MENU")
+
+    elif current_screen == "task_list":
+        task_frame3.grid_remove()
+        task_frame.grid(row=2, column=0, pady=10)
+        current_screen = "menu"
+        exit_button.config(text="back outside the menu", font=("Arial", 12))
+        menu_button.grid(row=1, column=0, pady=10)
+
+    elif current_screen in ("active_task_list", "completed_task_list"):
+        task_frame2.grid_remove()
+        task_frame3.grid(row=2, column=0, pady=10)
+        current_screen = "task_list"
+        exit_button.config(text="back outside the menu", font=("Arial", 12))
+        completed_task_list_button.grid(row=1, column=0, pady=5)
+        menu_button.grid(row=1, column=0, pady=10)
+        task_listlabel.grid_remove()
+        
+    elif current_screen == "within_a_task":
+        task_frame4.grid_remove()
+        task_frame2.grid(row=2, column=0, pady=10)
+        current_screen = "active_task_list"
+        task_listlabel.grid(row=1, column=0)
+    else:
+        root.destroy()
+
+def task_options_for_interface(i, option):
+    if option == "delete":
+        for tasks in Task_List.task_list:
+            if i.task_idd == tasks.task_idd:
+                Task_List.task_list.remove(i)
     
-Task_List.remove_task("8222922222")
-Task_List.complete_task("8222422222")
+    
+add_button = tk.Button(task_frame, text="Add Task", font=("Arial", 18))
+edit_button = tk.Button(task_frame4, text="Edit Task", font=("Arial", 18))
+delete_button = tk.Button(task_frame4, text="Delete Task", font=("Arial", 18), command=lambda: task_options_for_interface(specific_task, "delete"))
 
-for i in Task_List.task_list:
-    print(i)
+add_button.grid(row=0, column=0, pady=5, sticky="ew")
+edit_button.grid(row=1, column=0, pady=5, sticky="ew")
+delete_button.grid(row=2, column=0, pady=5, sticky="ew")
 
-print("-------")
-for i in Task_List.completed_task_list:
-    print(i)
+task_listlabel = tk.Label(main_frame, text="Click on a task to see options", font=("Arial", 10))
+    
+# View Tasks button
+menu_button = tk.Button(
+    main_frame,
+    text="MENU",
+    font=("Arial", 24),
+    command=lambda: handle_menu("main_button")
+)
+menu_button.grid(row=1, column=0, pady=10)
+
+completed_task_list_button = tk.Button(
+    task_frame3,
+    text="View Completed Tasks",
+    font=("Arial", 15),
+    command=lambda: handle_menu("Task_button")
+)
+completed_task_list_button.grid(row=1, column=0, pady=5)
+
+exit_button = tk.Button(
+    main_frame,
+    text="EXIT",
+    font=("Arial", 24),
+    bg="red",
+    command=exit_button_choices
+)
+exit_button.grid(row=3, column=0, pady=20)
+
+root.mainloop()
 
 tasklist.py:
 -----------
@@ -98,7 +278,7 @@ class Task():
         - task_idd(self, idd_newval): void
         + __repr__(self): str
     """
-    def __init__(self, task_message, task_idd, date_of_creation, deadline):
+    def __init__(self, task_message, task_idd, deadline):
         """
         Initializes a new task object
         Args:
@@ -111,7 +291,8 @@ class Task():
         self.task_message = task_message
         self.task_idd = task_idd
         self.date_of_completion = None
-        self.date_of_creation = date_of_creation
+        current_date = Task_List.date_conversion()
+        self.date_of_creation = current_date
         self.deadline = deadline
         Task_List.task_list.append(self)
 
