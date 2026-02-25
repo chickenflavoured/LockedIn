@@ -4,12 +4,21 @@ import pyperclip
 
 
 def get_entry():
-    author = f"{ln.get()}, {fn.get()}"
-
     f.config(state="normal")
     f.delete(1.0, tk.END)
+
+    author = f"{ln.get()}, {fn.get()[0]}. "
     f.insert(1.0, author)
-    f.insert(1.5, mn.get())
+
+    time = f"({date.get()}). "
+    f.insert(2.0, time)
+
+    ititle = f"*{variables["ititle"][0].get()}*. "
+    f.insert(3.0, ititle)
+
+    title = f"{variables["title"][0].get()}. "
+    f.insert(3.0, title)
+
     f.config(state="disabled")
 
 
@@ -19,9 +28,13 @@ def select_type(event):
     for widget in fields.winfo_children():
         widget.grid_remove()
 
-    for i, field in enumerate(sourcetypes[option]):
-        for j, widget in (enumerate(field)):
-            widget.grid(row=i, column=j)
+    i = 0
+    fields_used = sourcetypes[option]
+    for field in fields_used:
+        i += 1
+        tk.Label(fields, text=field).grid(row=i, column=0)
+        for j, widget in enumerate(variables[fields_used[field]]):
+            widget.grid(row=i, column=j + 1)
 
 
 FORMAT = {
@@ -56,223 +69,138 @@ Every field has
 {"variable": [Label, Entry]}
 """
 
+variables = {
+    "author": [tk.Entry(fields)],
+    "ititle": [tk.Entry(fields)],
+    "title": [tk.Entry(fields)],
+    "subtitle": [tk.Entry(fields)],
+    "pub": [tk.Entry(fields)],
+    "ipub": [tk.Entry(fields)],
+    "episode": [tk.Entry(fields)],
+    "edition": [tk.Entry(fields)],
+    "volume": [tk.Entry(fields)],
+    "issue": [tk.Entry(fields)],
+    "type": [tk.Entry(fields)],
+    "source": [tk.Entry(fields)],
+    "isource": [tk.Entry(fields)],
+    "album": [tk.Entry(fields)],
+    "city": [tk.Entry(fields)],
+    "country": [tk.Entry(fields)],
+    "institution": [tk.Entry(fields)],
+    "date": [tk.Entry(fields)],
+    "sp": [tk.Entry(fields)],
+    "ep": [tk.Entry(fields)],
+    "sy": [tk.Entry(fields)],
+    "ey": [tk.Entry(fields)],
+    "doi": [tk.Entry(fields)],
+    "url": [tk.Entry(fields)],
+    "accessed": [tk.Entry(fields)],
 
+    "media": [tk.Radiobutton(fields, text="Post", value="post"),
+              tk.Radiobutton(fields, text="Comment", value="comment")],
+
+    "isep": [tk.Radiobutton(fields, text="Whole podcast", value="podcast"),
+                tk.Radiobutton(fields, text="Single episode", value="episode")],
+
+    "podtype": [tk.Radiobutton(fields, text="Audio", value="audio"),
+                tk.Radiobutton(fields, text="Video", value="video")],
+    
+    "degree": [tk.Radiobutton(fields, text="Thesis", value="thesis"),
+                tk.Radiobutton(fields, text="Dissertation", value="dissertation")]
+}
 
 sourcetypes = {
-    "Book": [
+    "Book": {
+        "Title": "ititle",
+        "Subtitle": "subtitle",
+        "Publisher": "pub",
+        "Edition": "edition",
+        "Volume": "volume",
+        "DOI": "doi"
+    },
 
-        [tk.Label(fields, text="Title"),
-         tk.Entry(fields)],
+    "Article": {
+        "Article title": "title",
+        "Journal name": "isource",
+        "Volume No.": "volume",
+        "Issue No.": "issue",
+        "Start page": "sp",
+        "End page": "ep",
+        "DOI": "doi"
+    },
 
-        [tk.Label(fields, text="Subtitle"),
-         tk.Entry(fields)],
+    "Website": {
+        "Page title": "ititle",
+        "Website name": "source",
+        "Date accessed": "accessed"
+    },
 
-        [tk.Label(fields, text="Publisher"),
-         tk.Entry(fields)],
+    "Blog post": {
+        "Post title": "title",
+        "Blog name": "isource",
+        "Publisher": "ipub",
+        "Date accessed": "accessed",
+    },
+
+    "Social media": {
+        "Post or comment": "media",
+        "Post title": "ititle",
+        "Content": "ititle",
+        "Website name": "source",
+        "Date accessed": "accessed"
         
-        [tk.Label(fields, text="Edition"),
-         tk.Entry(fields)],
-        
-        [tk.Label(fields, text="Volume"),
-         tk.Entry(fields)],
+    },
 
-        [tk.Label(fields, text="DOI"),
-         tk.Entry(fields)]
+    "Video": {
+        "Video title": "ititle",
+        "Website name": "source"
+    },
 
-    ],
+    "Artwork": {
+        "Title": "ititle",
+        "Medium": "type",
+        "Museum or source": "source",
+        "City": "city",
+        "Country": "country"
+    },
 
-    "Article": [
-        [tk.Label(fields, text="Article title"),
-         tk.Entry(fields)],
+    "Image": {
+        "Title or description": "title",
+        "Medium": "type",
+        "Source": "source"
+    },
 
-        [tk.Label(fields, text="Journal name"),
-         tk.Entry(fields)],
+    "Music": {
+        "Title": "title",
+        "Album": "album",
+        "Label": "source"
+    },
 
-        [tk.Label(fields, text="Volume No."),
-         tk.Entry(fields)],
+    "Podcast": {
+        "Audio or video": "podtype",
+        "Episode or podcast": "isep",
+        "Podcast title": "isource",
+        "Episode title": "title",
+        "Episode number": "episode",
+        "Year started": "sy",
+        "Year ended": "ey",
+        "Production company": "source",
+    },
 
-        [tk.Label(fields, text="Issue No."),
-         tk.Entry(fields)],
+    "Presentation": {
+        "Title": "ititle",
+        "Type of presentation": "type",
+        "Title of conference": "source",
+        "City": "city",
+        "Country": "country"
+    },
 
-        [tk.Label(fields, text="Start page"),
-         tk.Entry(fields),
-         tk.Label(fields, text="End page"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="DOI"),
-         tk.Entry(fields)]
-    ],
-
-    "Website": [
-        [tk.Label(fields, text="Page title"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Website name"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Date accessed"),
-         tk.Entry(fields)]
-
-    ],
-
-    "Blog post": [
-        [tk.Label(fields, text="Post title"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Blog name"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Version number"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Organization name"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Date accessed"),
-         tk.Entry(fields)]
-    ],
-
-    "Social media": [
-        [tk.Radiobutton(fields, text="Post", value="post"),
-         tk.Radiobutton(fields, text="Comment", value="comment")],
-
-        [tk.Label(fields, text="Author handle"),
-         tk.Entry(fields)],
-
-         [tk.Label(fields, text="Content"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Time"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Website name"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Date accessed"),
-         tk.Entry(fields)],
-    ],
-
-    "Video": [
-        [tk.Label(fields, text="Video title"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Website name"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Uploader"),
-        tk.Entry(fields)],
-    ],
-
-    "Artwork": [
-        [tk.Label(fields, text="Title"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Medium"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Location"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="City"),
-         tk.Entry(fields),
-         tk.Label(fields, text="Country"),
-         tk.Entry(fields)]
-    ],
-
-    "Image": [
-        [tk.Label(fields, text="Title or description"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Medium"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Website name"),
-         tk.Entry(fields)]
-    ],
-
-    "Music": [
-        [tk.Label(fields, text="Title"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Album or suite"),
-         tk.Entry(fields)],
-        
-        [tk.Label(fields, text="Label"),
-         tk.Entry(fields)],
-    ],
-
-    "Podcast": [
-        [tk.Radiobutton(fields, text="Podcast", value="podcast"),
-         tk.Radiobutton(fields, text="Episode", value="episode")],
-        [tk.Label(fields, text="Podcast title"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Episode title"),
-         tk.Entry(fields)],
-        
-        [tk.Label(fields, text="Episode number"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Year started"),
-         tk.Entry(fields)],
-        
-        [tk.Label(fields, text="Year ended"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Production company"),
-         tk.Entry(fields)],
-
-        [tk.Radiobutton(fields, text="Audio", value="audio"),
-         tk.Radiobutton(fields, text="Video", value="video")],
-    ],
-
-    "Presentation": [
-        [tk.Label(fields, text="Title"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Type of presentation"),
-         tk.Entry(fields)],
-        
-        [tk.Label(fields, text="Location"),
-         tk.Entry(fields)],
-        
-        [tk.Label(fields, text="City"),
-         tk.Entry(fields),
-         tk.Label(fields, text="Country"),
-         tk.Entry(fields)]
-    ],
-
-    "Thesis or dissertation": [
-        [tk.Radiobutton(fields, text="Thesis", value="thesis"),
-         tk.Radiobutton(fields, text="Dissertation", value="dissertation")],
-
-        [tk.Label(fields, text="Title"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Institution"),
-         tk.Entry(fields)],
-
-        [tk.Label(fields, text="Source name"),
-         tk.Entry(fields)],
-
-    ],
-
-    "Court case": [
-        [tk.Label(fields, text="Plaintiff"),
-         tk.Entry(fields),
-         tk.Label(fields, text="Defendant"),
-         tk.Entry(fields)],
-        
-        [tk.Label(fields, text="Volume number"),
-         tk.Entry(fields)],
-        
-        [tk.Label(fields, text="Reporter"),
-         tk.Entry(fields)],
-        
-        [tk.Label(fields, text="Court jurisdiction"),
-         tk.Entry(fields)]
-    ]
-
+    "Thesis or dissertation": {
+        "Thesis or dissertation": "degree",
+        "Title": "ititle",
+        "Institution": "institution",
+        "Source name": "source"
+    }
 }
 
 sourcetype = tk.Listbox(general, listvariable=tk.Variable(value=list(sourcetypes.keys())), selectmode="browse", height=len(sourcetypes), exportselection=False)
