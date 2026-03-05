@@ -7,21 +7,21 @@ import sdl2
 import sdl2.sdlmixer as mixer
 
 # https://pypi.org/project/PySDL2/
-#FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg")
+FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg/bin/ffmpeg.exe")
 
 def play():
     pass
 
-# https://www.youtube.com/watch?v=60ItHLz5WEA
+# https://www.youtube.com/watch?v=0F4fFNE7p38
 
 def download():
 
     url = link.get()
 
     ydl_options = {
-        "outtmpl":"music.mp3",
+        "outtmpl":"music",
         "format": "bestaudio/best",
-        "ffmpeg_location": "./ffmpeg",
+        "ffmpeg-location": "./ffmpeg/bin/ffmpeg.exe",
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
             "preferredcodec": "mp3",
