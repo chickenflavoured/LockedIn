@@ -28,50 +28,63 @@ import time
 
 # window.mainloop()
 
-time1 = 3
-short_rest = 1
-long_rest = 10
-num_sessions = 2
 
-total_session = (time1 + short_rest)*num_sessions + long_rest
-
-while total_session >= 0:
+# while total_session >= 0:
     
     # hour = int(time1 // 3600))
     # min = int((time1 % 3600) // 60)
     # sec = int(time1 % 60)
 
-    hour = int(total_session - short_rest)
+    # hour = int(total_session - short_rest)
     
-    # Display amount of time left
-    if total_session == 0:
-        if num_sessions > 0:
-            num_sessions -= 1
-            total_session = time1 + short_rest
-        elif num_sessions == 0:
-            total_session = long_rest
-    elif total_session == long_rest:
-        print(f"\r(long break) there's {long_rest} left")
-        long_rest -= 1
-        total_session -= 1
-        if total_session == 0 and long_rest == 0:
-            total_session = -1
-    elif total_session <= short_rest:
-        print(f"\r(Break) There's {total_session} left", end = "")
-        print(f"Num sessions left: {num_sessions}")
-        total_session -= 1  
-    else:
-        print(f"\r There's {hour:02d} left", end = "")
-        print(f"Num sessions left: {num_sessions}")
-        total_session -= 1  
+    # # Display amount of time left
+    # if total_session == 0:
+    #     if num_sessions > 0:
+    #         num_sessions -= 1
+    #         total_session = time1 + short_rest
+    #     elif num_sessions == 0:
+    #         total_session = long_rest
+    # elif total_session == long_rest:
+    #     print(f"\r(long break) there's {long_rest} left")
+    #     long_rest -= 1
+    #     total_session -= 1
+    #     if total_session == 0 and long_rest == 0:
+    #         total_session = -1
+    # elif total_session <= short_rest:
+    #     print(f"\r(Break) There's {total_session} left", end = "")
+    #     print(f"Num sessions left: {num_sessions}")
+    #     total_session -= 1  
+    # else:
+    #     print(f"\r There's {hour:02d} left", end = "")
+    #     print(f"Num sessions left: {num_sessions}")
+    #     total_session -= 1  
 
-    time.sleep(1)
+    # time.sleep(1)
 
+
+time1 = 3
+short_rest = 1
+long_rest = 10
+num_sessions = 5
 
     # Reduce timer
+for num in range(num_sessions):
+    total_session = time1 + short_rest
+    while total_session > 0:
+        hour = int(total_session - short_rest)
+        if total_session > short_rest:
+            print(f"\r there's {hour} left")
+        else:
+            print(f"(rest) there's {total_session} left")
 
-while total_session >= 0:
-
-    if total_session == 
+        total_session -= 1
+        
+        time.sleep(1)
+    
+    if num % 3 == 0 and num != 0:
+        while long_rest > 0:
+            print(f"(long) there's {long_rest} left")
+            long_rest -= 1
+            time.sleep(1)
 
 print("timer over")

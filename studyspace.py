@@ -10,6 +10,50 @@ WIDTH = 600
 # Window display size
 window.geometry(f"{WIDTH}x{HEIGHT}")
 
+def placeholder():
+    print("This is a placeholder")
+
+def start_timer_thread(timer, work, rest, longrest, session, time_begun, btn):
+    """
+    Starts running the countdown timer with a thread.
+
+    Args:
+        timer(Timer)
+        time1(int)
+        time2(int)
+        time3(int)
+
+    """
+
+    timer.work_time = work * 60
+    timer.rest_time = rest * 60 + 1 # Add an extra second towards rest_time because the pomodoro jumps over one second on the rest in display
+    timer.longrest_time = longrest * 60
+    timer.sessions = session
+
+    # Start running the thread with instance method
+    separate = threading.Thread(target = timer.pomodoro_countdown, args = (window,), daemon = True) # Needs to be a comma at args = (window,)
+    separate.start()
+
+    if time_begun[1]:
+        time_begun[1] = False
+        btn.config(text = "Begin Timer")
+
+    else:
+        time_begun[1] = True
+        time_begun[2] = False
+        btn.config(text = "End Timer") 
+    
+def pause_timer_thread(timer, time_paused, btn):
+    
+    if not time_paused[0]:
+        time_paused[0] = True
+        btn.config(text = "Resume")
+        timer.pause_event.clear() #.clear() pauses the thread attribute in timer
+    else:
+        time_paused[0] = False
+        btn.config(text = "Pause")
+        timer.pause_event.set() #.set() resumes the thread attribute in timer
+
 def main(choice):
 
     # Remove the buttons
@@ -18,8 +62,7 @@ def main(choice):
     stopwatch_btn.destroy()
 
     # Create instance of Timer Class
-    time = 0
-    timer = Timer(time)
+    timer = Timer(0, 0, 0, 0)
 
     # Variable keeping track of the timer.
     # [0] -> Whether the user is pausing or resuming the timer
@@ -76,48 +119,6 @@ def main(choice):
     else:
         new_btn = tk.Button(window, text = "Start", command = placeholder)
         new_btn.grid(row = 0, column = 0)
-
-def placeholder():
-    print("This is a placeholder")
-
-def start_timer_thread(timer, work, rest, longrest, session, time_begun, btn):
-    """
-    Starts running the countdown timer with a thread.
-
-    Args:
-        timer(Timer)
-        time1(int)
-        time2(int)
-        time3(int)
-
-    """
-
-    timer.total_time = 60*session*(work+rest) + longrest
-    timer.running = time_begun[2]
-    # Start running the thread with instance method
-    separate = threading.Thread(target = timer.countdown, args = (window,), daemon = True) # Needs to be a comma at args = (window,)
-    separate.start()
-
-    if time_begun[1]:
-        time_begun[1] = False
-        btn.config(text = "Begin Timer")
-
-    else:
-        time_begun[1] = True
-        time_begun[2] = False
-        btn.config(text = "End Timer") 
-    
-def pause_timer_thread(timer, time_paused, btn):
-    
-    if not time_paused[0]:
-        time_paused[0] = True
-        btn.config(text = "Resume")
-        timer.pause_event.clear() #.clear() pauses the thread attribute in timer
-    else:
-        time_paused[0] = False
-        btn.config(text = "Pause")
-        timer.pause_event.set() #.set() resumes the thread attribute in timer
-
 
 pomodoro_btn = tk.Button(window, text = "Pomodoro", command = lambda: main("pomodoro"))
 countdown_btn = tk.Button(window, text = "Countdown", command = lambda: main("countdown"))

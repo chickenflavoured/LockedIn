@@ -8,12 +8,15 @@ class Timer:
     """
     Docstring for Timer
     """
-    def __init__(self, total_time:int):
-        self.time = total_time
+    def __init__(self, work_time:int, rest_time, longrest_time, sessions):
+        self.work_time = work_time
+        self.rest_time = rest_time
+        self.longrest_time = longrest_time
+        self.sessions = sessions
         self.pause_event = threading.Event()
         # total time become work time make new var total time + shor tbreak +long break
 
-    def countdown(self, window):
+    def pomodoro_countdown(self, window):
         """
         Simple countdown total_timer based on the user's input
 
@@ -25,25 +28,63 @@ class Timer:
         timer_display = tk.Label(window)
         timer_display.grid(row = 4, column = 4)
 
-        # Main timer loop
-        while self.total_time >= 0:
+        # Loop timer for every session
+        for num in range(self.sessions):
 
-            self.pause_event.wait() # this checks to see whether the event is set/cleared (running/paused)
-            
-            hour = int(self.total_time // 3600)
-            min = int((self.total_time % 3600) // 60)
-            sec = int(self.total_time % 60)
-            
-            # Display amount of time left
-            timer_display.config(text = f"There's {hour:02d}:{min:02d}:{sec:02d} left")
+            total_time = self.work_time + self.rest_time
 
-            # Let the second pass
-            time.sleep(1)
+            # Main timer countdown + rest loop
+            while total_time >= 0:
+                
+                self.pause_event.wait() # Checks to see whether the event is set/cleared (running/paused)
 
-            # Reduce timer
-            self.total_time -= 1  
+                working = int(total_time - self.rest_time)
+
+                if total_time >= self.rest_time:
+                    timer_display.config(text = f"there's {(working//3600):02d}:{(working%3600//60):02d}:{(working%60):02d} left")
+                else:
+                    timer_display.config(text = f"there's {(total_time//3600):02d}:{(total_time%3600//60):02d}:{(total_time%60):02d} left")
+
+
+                total_time -= 1
+                
+                time.sleep(1)
+
+            # Long break occurs every 3 working sessions
+            if num % 3 == 0 and num != 0:
+                
+                resting = self.longrest_time
+
+                while resting >= 0:
+
+                    self.pause_event.wait() 
+
+                    timer_display.config(text = f"there's {(resting//3600):02d}:{(resting%3600//60):02d}:{(resting%60):02d} left")
+                    resting -= 1
+                    time.sleep(1)
+
         
-        print("timer over")
+
+
+        # # Main timer loop
+        # while self.total_time >= 0:
+
+        #     self.pause_event.wait() # this checks to see whether the event is set/cleared (running/paused)
+            
+        #     hour = int(self.total_time // 3600)
+        #     min = int((self.total_time % 3600) // 60)
+        #     sec = int(self.total_time % 60)
+            
+        #     # Display amount of time left
+        #     timer_display.config(text = f"There's {hour:02d}:{min:02d}:{sec:02d} left")
+
+        #     # Let the second pass
+        #     time.sleep(1)
+
+        #     # Reduce timer
+        #     self.total_time -= 1  
+        
+        # print("timer over")
  
 
     def pomodoro(self):
@@ -51,5 +92,3 @@ class Timer:
 
     def stopwatch(self):
         pass
-
-
