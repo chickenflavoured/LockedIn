@@ -26,12 +26,17 @@ def start_timer_thread(timer, work, rest, longrest, session, time_begun, btn):
     """
 
     timer.work_time = work * 60
-    timer.rest_time = rest * 60 + 1 # Add an extra second towards rest_time because the pomodoro jumps over one second on the rest in display
+    timer.rest_time = rest * 60 # Add an extra second towards rest_time because the pomodoro jumps over one second on the rest in display
     timer.longrest_time = longrest * 60
     timer.sessions = session
+    timer.running = time_begun[1]
 
-    # Start running the thread with instance method
-    separate = threading.Thread(target = timer.pomodoro_countdown, args = (window,), daemon = True) # Needs to be a comma at args = (window,)
+    if not time_begun[2]:
+        # Start running the thread with instance method
+        separate = threading.Thread(target = timer.pomodoro_countdown, args = (window,), daemon = True) # Needs to be a comma at args = (window,)
+    else:
+        separate = threading.Thread(target = timer.stopwatch, args = (window,), daemon = True)
+
     separate.start()
 
     if time_begun[1]:
@@ -40,7 +45,6 @@ def start_timer_thread(timer, work, rest, longrest, session, time_begun, btn):
 
     else:
         time_begun[1] = True
-        time_begun[2] = False
         btn.config(text = "End Timer") 
     
 def pause_timer_thread(timer, time_paused, btn):
@@ -54,7 +58,7 @@ def pause_timer_thread(timer, time_paused, btn):
         btn.config(text = "Pause")
         timer.pause_event.set() #.set() resumes the thread attribute in timer
 
-def main(choice):
+def main(choice, is_stopwatch):
 
     # Remove the buttons
     pomodoro_btn.destroy()
@@ -62,12 +66,13 @@ def main(choice):
     stopwatch_btn.destroy()
 
     # Create instance of Timer Class
-    timer = Timer(0, 0, 0, 0)
+    timer = Timer(0, 0, 0, 0, True)
 
     # Variable keeping track of the timer.
     # [0] -> Whether the user is pausing or resuming the timer
     # [1] -> Whether the user is beginning or ending the timer.
-    time_paused_and_started = [False, True, True]
+    # [2] -> Whether it is a stopwatch
+    time_paused_and_started = [False, True, is_stopwatch]
 
     # Variables
     time_var = tk.IntVar(value = 0) 
@@ -99,30 +104,31 @@ def main(choice):
         # Time entries and labels initialization
         time_label = tk.Label(window, text = "Minutes")
         time_entry = tk.Entry(window, textvariable = time_var)
-
-        # Buttons initialization
-        start_btn = tk.Button(window, text = "Begin Timer", command = lambda: start_timer_thread(timer, time_var.get(), rest_var.get(), longrest_var.get(), session_var.get(), time_paused_and_started, start_btn)) # Lambda allows command to pass arguments without immediately executing function
-        pause_btn = tk.Button(window, text = "Pause", command = lambda: pause_timer_thread(timer, time_paused_and_started, pause_btn))
-
-        # -- Grid Placements --
-
-        # Buttons
-        pause_btn.grid(row = 4, column = 0)
-        start_btn.grid(row = 6, column = 0)
-
+        
         # Labels
         time_label.grid(row = 0, column = 0)
 
         # Entries
         time_entry.grid(row = 0, column = 1)
-    
-    else:
-        new_btn = tk.Button(window, text = "Start", command = placeholder)
-        new_btn.grid(row = 0, column = 0)
 
-pomodoro_btn = tk.Button(window, text = "Pomodoro", command = lambda: main("pomodoro"))
-countdown_btn = tk.Button(window, text = "Countdown", command = lambda: main("countdown"))
-stopwatch_btn = tk.Button(window, text = "Stopwatch", command = lambda: main("stopwatch"))
+    else:
+        print(choice)
+
+
+    # Buttons initialization
+    start_btn = tk.Button(window, text = "Begin Timer", command = lambda: start_timer_thread(timer, time_var.get(), rest_var.get(), longrest_var.get(), session_var.get(), time_paused_and_started, start_btn)) # Lambda allows command to pass arguments without immediately executing function
+    pause_btn = tk.Button(window, text = "Pause", command = lambda: pause_timer_thread(timer, time_paused_and_started, pause_btn))
+
+    # -- Grid Placements --
+
+    # Buttons
+    pause_btn.grid(row = 4, column = 0)
+    start_btn.grid(row = 6, column = 0)
+
+
+pomodoro_btn = tk.Button(window, text = "Pomodoro", command = lambda: main("pomodoro", False))
+countdown_btn = tk.Button(window, text = "Countdown", command = lambda: main("countdown", False))
+stopwatch_btn = tk.Button(window, text = "Stopwatch", command = lambda: main("stopwatch", True))
 
 pomodoro_btn.grid(row = 2, column = 1)
 countdown_btn.grid(row = 2, column = 3)

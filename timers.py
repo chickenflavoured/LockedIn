@@ -8,11 +8,12 @@ class Timer:
     """
     Docstring for Timer
     """
-    def __init__(self, work_time:int, rest_time, longrest_time, sessions):
+    def __init__(self, work_time, rest_time, longrest_time, sessions, running):
         self.work_time = work_time
         self.rest_time = rest_time
         self.longrest_time = longrest_time
         self.sessions = sessions
+        self.running = running
         self.pause_event = threading.Event()
         # total time become work time make new var total time + shor tbreak +long break
 
@@ -30,6 +31,7 @@ class Timer:
 
         # Loop timer for every session
         for num in range(self.sessions):
+            print(self.rest_time)
 
             total_time = self.work_time + self.rest_time
 
@@ -40,8 +42,10 @@ class Timer:
 
                 working = int(total_time - self.rest_time)
 
+                # Work time
                 if total_time >= self.rest_time:
                     timer_display.config(text = f"there's {(working//3600):02d}:{(working%3600//60):02d}:{(working%60):02d} left")
+                # Rest time
                 else:
                     timer_display.config(text = f"there's {(total_time//3600):02d}:{(total_time%3600//60):02d}:{(total_time%60):02d} left")
 
@@ -63,32 +67,18 @@ class Timer:
                     resting -= 1
                     time.sleep(1)
 
-        
+    def stopwatch(self, window):
+
+        self.pause_event.set()
+        timer_display = tk.Label(window)
+        timer_display.grid(row = 4, column = 4)
 
 
-        # # Main timer loop
-        # while self.total_time >= 0:
+        while self.running:
 
-        #     self.pause_event.wait() # this checks to see whether the event is set/cleared (running/paused)
-            
-        #     hour = int(self.total_time // 3600)
-        #     min = int((self.total_time % 3600) // 60)
-        #     sec = int(self.total_time % 60)
-            
-        #     # Display amount of time left
-        #     timer_display.config(text = f"There's {hour:02d}:{min:02d}:{sec:02d} left")
+            self.pause_event.wait()
 
-        #     # Let the second pass
-        #     time.sleep(1)
+            timer_display.config(text = f"{(int(self.work_time)//3600):02d}:{(int(self.work_time)%3600//60):02d}:{(int(self.work_time)%60):02d}:{int(round(self.work_time % 1, 1)*10)}")
 
-        #     # Reduce timer
-        #     self.total_time -= 1  
-        
-        # print("timer over")
- 
-
-    def pomodoro(self):
-        pass
-
-    def stopwatch(self):
-        pass
+            self.work_time += 0.1
+            time.sleep(0.1)
