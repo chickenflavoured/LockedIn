@@ -9,11 +9,22 @@ import sdl2.sdlmixer as mixer
 # https://pypi.org/project/PySDL2/
 FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg/bin/ffmpeg.exe")
 
+mixer.Mix_OpenAudio(44100, sdl2.AUDIO_S16SYS, 2, 2048)
+
+
 def play():
-    pass
+        if not mixer.Mix_Playing(-1):
+            file = mixer.Mix_LoadWAV("music.mp3".encode("utf-8"))
+            mixer.Mix_PlayChannel(-1, file, 0)
 
-# https://www.youtube.com/watch?v=0F4fFNE7p38
+        else:
+            mixer.Mix_Resume(-1)
 
+
+def pause():
+        mixer.Mix_Pause(-1)
+
+# https://youtu.be/_RGp-Cynxkg
 def download():
 
     url = link.get()
@@ -25,10 +36,10 @@ def download():
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
             "preferredcodec": "mp3",
-            "preferredquality": "192",
+            "preferredquality": "44.1",
         }]
         }
-    
+
     if os.path.isfile("music.mp3"):
         os.remove("music.mp3")
 
@@ -42,15 +53,24 @@ def download():
         views = info.get("view_count", None)
 
 root = tk.Tk()
+root.title("Music Player")
 root.geometry(f"480x360")
+
+is_playing = False
 
 link = tk.Entry(root)
 link.grid(row=0, column=0)
 
-button = tk.Button(root, text="Play", command=play)
-button.grid(row=1, column=0, padx=10, pady=10)
+play_button = tk.Button(root, text="Play", command=play)
+play_button.grid(row=1, column=0, padx=10, pady=0)
 
-button = tk.Button(root, text="Download", command=download)
-button.grid(row=1, column=1, padx=10, pady=10)
+pause_button = tk.Button(root, text="Pause", command=pause)
+pause_button.grid(row=2, column=0, padx=10, pady=0)
+
+stop_button = tk.Button(root, text="Stop", command=play)
+stop_button.grid(row=3, column=0, padx=10, pady=0)
+
+dl_button = tk.Button(root, text="Download", command=download)
+dl_button.grid(row=1, column=1, padx=10, pady=0)
 
 root.mainloop()
