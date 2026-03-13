@@ -51,6 +51,7 @@ def render_citation(**kwargs):
 
 
 root = tk.Tk()
+root.title("Citation Machine")
 root.geometry(f"960x720")
 
 general = tk.Frame(root)
