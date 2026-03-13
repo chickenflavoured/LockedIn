@@ -41,11 +41,11 @@ def start_timer_thread(timer, work, rest, longrest, session, time_begun, btn):
 
     if time_begun[1]:
         time_begun[1] = False
-        btn.config(text = "Begin Timer")
+        btn.config(text = "End Timer")
 
     else:
         time_begun[1] = True
-        btn.config(text = "End Timer") 
+        btn.config(text = "Begin Timer") 
     
 def pause_timer_thread(timer, time_paused, btn):
     

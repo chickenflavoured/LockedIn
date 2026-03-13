@@ -31,10 +31,8 @@ class Timer:
 
         # Loop timer for every session
         for num in range(self.sessions):
-            print(self.rest_time)
 
             total_time = self.work_time + self.rest_time
-
             # Main timer countdown + rest loop
             while total_time >= 0:
                 
@@ -49,10 +47,14 @@ class Timer:
                 else:
                     timer_display.config(text = f"there's {(total_time//3600):02d}:{(total_time%3600//60):02d}:{(total_time%60):02d} left")
 
-
                 total_time -= 1
                 
                 time.sleep(1)
+
+                if not self.running:
+                    self.sessions = 0
+                    total_time = 0
+                    timer_display.destroy()
 
             # Long break occurs every 3 working sessions
             if num % 3 == 0 and num != 0:
@@ -67,12 +69,13 @@ class Timer:
                     resting -= 1
                     time.sleep(1)
 
+
+
     def stopwatch(self, window):
 
         self.pause_event.set()
         timer_display = tk.Label(window)
         timer_display.grid(row = 4, column = 4)
-
 
         while self.running:
 
@@ -81,4 +84,7 @@ class Timer:
             timer_display.config(text = f"{(int(self.work_time)//3600):02d}:{(int(self.work_time)%3600//60):02d}:{(int(self.work_time)%60):02d}:{int(round(self.work_time % 1, 1)*10)}")
 
             self.work_time += 0.1
+
             time.sleep(0.1)
+
+        timer_display.destroy() # remove display if the stopwatch is no longer running
