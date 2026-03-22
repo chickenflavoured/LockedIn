@@ -1,3 +1,4 @@
+
 import tkinter as tk
 from tkinter import ttk
 import time
@@ -15,12 +16,9 @@ class Timer:
         self.sessions = sessions
         self.running = running
         self.pause_event = threading.Event()
-        # total time become work time make new var total time + shor tbreak +long break
 
-    def pomodoro_countdown(self, window):
+    def pomodoro_countdown(self, window, timer_done):
         """
-        Simple countdown total_timer based on the user's input
-
         Args:
             
         """
@@ -31,6 +29,10 @@ class Timer:
 
         # Loop timer for every session
         for num in range(self.sessions):
+
+            # If the timer isn't running, end the loop
+            if not self.running:
+                break
 
             total_time = self.work_time + self.rest_time
             # Main timer countdown + rest loop
@@ -51,10 +53,9 @@ class Timer:
                 
                 time.sleep(1)
 
+                # Ends the loop, completing the thread
                 if not self.running:
-                    self.sessions = 0
-                    total_time = 0
-                    timer_display.destroy()
+                    break
 
             # Long break occurs every 3 working sessions
             if num % 3 == 0 and num != 0:
@@ -62,6 +63,9 @@ class Timer:
                 resting = self.longrest_time
 
                 while resting >= 0:
+                # Ends the loop, completing the thread
+                    if not self.running:
+                        break
 
                     self.pause_event.wait() 
 
@@ -69,6 +73,9 @@ class Timer:
                     resting -= 1
                     time.sleep(1)
 
+        timer_display.grid_forget()
+        # Whenever a loop has finished, call timer_done to complete it.
+        window.after(0, timer_done)
 
 
     def stopwatch(self, window):
@@ -87,4 +94,4 @@ class Timer:
 
             time.sleep(0.1)
 
-        timer_display.destroy() # remove display if the stopwatch is no longer running
+        timer_display.destroy() # remove display if the stopwatch is no longer running]
