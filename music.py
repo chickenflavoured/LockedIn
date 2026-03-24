@@ -11,7 +11,6 @@ FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg/bin/ffmpeg.exe")
 
 mixer.Mix_OpenAudio(44100, sdl2.AUDIO_S16SYS, 2, 2048)
 
-
 def play():
         if not mixer.Mix_Playing(-1):
             file = mixer.Mix_LoadWAV("music.mp3".encode("utf-8"))
@@ -23,6 +22,10 @@ def play():
 
 def pause():
         mixer.Mix_Pause(-1)
+
+
+def stop():
+        mixer.Mix_FadeOutChannel(-1, 1000)
 
 # https://youtu.be/_RGp-Cynxkg
 def download():
@@ -67,7 +70,7 @@ play_button.grid(row=1, column=0, padx=10, pady=0)
 pause_button = tk.Button(root, text="Pause", command=pause)
 pause_button.grid(row=2, column=0, padx=10, pady=0)
 
-stop_button = tk.Button(root, text="Stop", command=play)
+stop_button = tk.Button(root, text="Stop", command=stop)
 stop_button.grid(row=3, column=0, padx=10, pady=0)
 
 dl_button = tk.Button(root, text="Download", command=download)
