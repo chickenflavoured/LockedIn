@@ -1,4 +1,3 @@
-
 import tkinter as tk
 from tkinter import ttk
 import time
@@ -78,7 +77,7 @@ class Timer:
         window.after(0, timer_done)
 
 
-    def stopwatch(self, window):
+    def stopwatch(self, window, timer_done):
 
         self.pause_event.set()
         timer_display = tk.Label(window)
@@ -94,4 +93,5 @@ class Timer:
 
             time.sleep(0.1)
 
-        timer_display.destroy() # remove display if the stopwatch is no longer running]
+        timer_display.grid_forget() # remove display if the stopwatch is no longer running]
+        window.after(0, timer_done)
