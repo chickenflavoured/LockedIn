@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
-import pyperclip
 
 
 def get_entry():
+
     f.config(state="normal")
     f.delete(1.0, tk.END)
+
+    # Make another list - instead of f.insert - insert into another list. Then, use a for loop to run through that new list, and at the end insert the value into f list with a period or comma after 
+    # ^ this is how to get rid of the issue of the periods and commas because right now, if you leave an empty space, it will still input a comma/period
 
     author = f"{ln.get()}, {fn.get()[0]}. "
     f.insert(1.0, author)
@@ -18,6 +21,44 @@ def get_entry():
 
     title = f"{variables["title"][0].get()}. "
     f.insert(3.0, title)
+
+    episode = f"({variables["episodes"][0].get()}). "
+    f.insert(4.0, episode)
+
+    edition = f"{variables["edition"][0].get()}. "
+    f.insert(5.0, edition)
+
+    volume = f"*{variables["volume"][0].get()}*. "
+    f.insert(6.0, volume)
+
+    # Issue and volume are sometimes the same
+    issue = f"*{variables["issue"][0].get()}*. "
+    f.insert(6.0, issue)
+
+    type = f"[{variables["type"][0].get()}]. "
+    f.insert(7.0, type)
+
+    album = f"{variables["album"][0].get()}. "
+    f.insert(8.0, album)
+
+    source = f"{variables["source"][0].get()}. "
+    f.insert(.0, source)
+
+    isource = f"*{variables["isource"][0].get()}*. "
+    f.insert(.0, isource)
+
+    city = f"{variables["city"][0].get()}, "
+    f.insert(.0, city)
+
+    country = f"{variables["city"][0].get()}"
+    f.insert(.0), country
+
+    pub = f"{variables["pub"][0].get()}. "
+    f.insert(.0, pub)
+
+    ipub = f"*{variables["ipub"][0].get()}*. "
+    f.insert(.0, ipub)
+
 
     f.config(state="disabled")
 
