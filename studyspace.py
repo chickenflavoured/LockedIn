@@ -1,4 +1,3 @@
-
 import tkinter as tk
 from tkinter import ttk
 from timers import Timer
@@ -6,8 +5,8 @@ import threading
 
 window = tk.Tk()
 
-HEIGHT = 300
-WIDTH = 900
+HEIGHT = 200
+WIDTH = 250
 # Window display size
 window.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -78,7 +77,7 @@ def start_timer_thread(timer, work_var, rest_var, longrest_var, session_var, tim
             # Start running the thread with instance method
             separate = threading.Thread(target = timer.pomodoro_countdown, args = (window, timer_done,), daemon = True) # Needs to be a comma at args = (window,)
         else:
-            separate = threading.Thread(target = timer.stopwatch, args = (window,), daemon = True)
+            separate = threading.Thread(target = timer.stopwatch, args = (window, timer_done,), daemon = True)
         
         separate.start()
 
@@ -136,14 +135,14 @@ def main(choice, is_stopwatch):
         session_entry = tk.Entry(window, textvariable = session_var, validate = "key", validatecommand = check_valid)
 
         # Labels
-        rest_label.grid(row = 0, column = 2)
-        longrest_label.grid(row = 0, column = 4)
-        session_label.grid(row = 0, column = 6)
+        rest_label.grid(row = 2, column = 0)
+        longrest_label.grid(row = 3, column = 0)
+        session_label.grid(row = 4, column = 0)
 
         # Entries
-        rest_entry.grid(row = 0, column = 3)
-        longrest_entry.grid(row = 0, column = 5)
-        session_entry.grid(row = 0, column = 7)
+        rest_entry.grid(row = 2, column = 1)
+        longrest_entry.grid(row = 3, column = 1)
+        session_entry.grid(row = 4, column = 1)
 
         # Input Validation
 
@@ -168,8 +167,8 @@ def main(choice, is_stopwatch):
     # -- Grid Placements --
 
     # Buttons
-    start_btn.grid(row = 6, column = 0)
-    pause_btn.grid(row = 4, column = 0)
+    start_btn.grid(row = 5, column = 0)
+    pause_btn.grid(row = 6, column = 0)
     pause_btn.grid_remove()
 
 pomodoro_btn = tk.Button(window, text = "Pomodoro", command = lambda: main("pomodoro", False))
