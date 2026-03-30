@@ -7,7 +7,9 @@ import sdl2
 import sdl2.sdlmixer as mixer
 
 # https://pypi.org/project/PySDL2/
-FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg/bin/ffmpeg.exe")
+# FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg/bin/ffmpeg.exe")
+
+# Think about tkSnack? https://www.speech.kth.se/snack/
 
 mixer.Mix_OpenAudio(44100, sdl2.AUDIO_S16SYS, 2, 2048)
 
@@ -33,18 +35,16 @@ def download():
     url = link.get()
 
     ydl_options = {
-        "outtmpl":"music",
+        "outtmpl": f"tracks/{len(os.listdir('./tracks'))}",
         "format": "bestaudio/best",
-        "ffmpeg-location": "./ffmpeg/bin/ffmpeg.exe",
+        # "ffmpeg-location": "./ffmpeg/bin/ffmpeg.exe",
+        "ffmpeg-location": "ffmpeg/bin/ffmpeg.exe",
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
             "preferredcodec": "mp3",
             "preferredquality": "44.1",
         }]
         }
-
-    if os.path.isfile("music.mp3"):
-        os.remove("music.mp3")
 
 
     with yt_dlp.YoutubeDL(ydl_options) as ydl:
