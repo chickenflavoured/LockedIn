@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+import subprocess
 """
  NOTES
 
@@ -21,8 +21,8 @@ from tkinter import ttk
 # Initializes window display
 window = tk.Tk()
 # Constants
-HEIGHT = 900
-WIDTH = 1800
+HEIGHT = 400
+WIDTH = 400
 # Window display size
 window.geometry(f"{WIDTH}x{HEIGHT}")
 
@@ -35,36 +35,28 @@ def main_menu():
     start_btn.destroy()
 
     citation_btn = tk.Button(window, text = "Citation Machine", command = citation_machine)
-    citation_btn.place(x = WIDTH*3/4, y = HEIGHT*3/4, anchor = 'center')
+    citation_btn.grid(row=0, column=0, padx=40, pady=40)
     
     presentation_btn = tk.Button(window, text = "Presentation Helper", command = oral_helper)
-    presentation_btn.place(x = WIDTH/4, y = HEIGHT/4, anchor = 'center')
+    presentation_btn.grid(row=1, column=0, padx=40, pady=40)
 
     timer_btn = tk.Button(window, text = "Focus Timer", command = focus_timer)
-    timer_btn.place(x = WIDTH*3/4, y = HEIGHT/4, anchor = 'center')
+    timer_btn.grid(row=0, column=1, padx=40, pady=40)
 
     td_btn = tk.Button(window, text = "To-Do List", command = td_list)
-    td_btn.place(x = WIDTH/4, y = HEIGHT*3/4, anchor = 'center')
+    td_btn.grid(row=1, column=1, padx=40, pady=40)
 
 def citation_machine():
-    if windows_on[0] == False:
-        citation_window = tk.Toplevel(window) # Toplevel is used as inheritence so that when window closes it also closes
-        windows_on[0] = True
+    subprocess.Popen(["python", "citations_old.py"])
 
 def oral_helper():
-    if windows_on[1] == False:
-        oral_helper_window = tk.Toplevel(window)
-        windows_on[1] = True
+    subprocess.Popen(["python", "oral.py"])
 
 def focus_timer():
-    if windows_on[2] == False:
-        focus_time_window = tk.Toplevel(window)
-        windows_on[2] = True
+    subprocess.Popen(["python", "timers.py"])
 
 def td_list():
-    if windows_on[3] == False:
-        td_list_window = tk.Toplevel(window)
-        windows_on[3] = True
+    subprocess.Popen(["python", "task_main.py"])
 
 # Function executes when button is pressed
 start_btn = tk.Button(window, text = "Start", command = main_menu)
