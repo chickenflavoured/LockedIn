@@ -56,7 +56,7 @@ def focus_timer():
     subprocess.Popen(["python", "timers.py"])
 
 def td_list():
-    subprocess.Popen(["python", "task_main.py"])
+    subprocess.Popen(["python", "task_interface.py"])
 
 # Function executes when button is pressed
 start_btn = tk.Button(window, text = "Start", command = main_menu)
