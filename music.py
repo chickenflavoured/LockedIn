@@ -7,27 +7,28 @@ import sdl2
 import sdl2.sdlmixer as mixer
 
 # https://pypi.org/project/PySDL2/
-# FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg/bin/ffmpeg.exe")
+FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg/bin/ffmpeg.exe")
 
 # Think about tkSnack? https://www.speech.kth.se/snack/
 
 mixer.Mix_OpenAudio(44100, sdl2.AUDIO_S16SYS, 2, 2048)
 
-def play():
-        if not mixer.Mix_Playing(-1):
-            file = mixer.Mix_LoadWAV("music.mp3".encode("utf-8"))
-            mixer.Mix_PlayChannel(-1, file, 0)
+def play(event):
+    if not mixer.Mix_Playing(-1):
+        print(playlist.get(playlist.curselection()))
+        file = mixer.Mix_LoadWAV(f"./tracks/{playlist.get(playlist.curselection())}".encode("utf-8"))
+        mixer.Mix_PlayChannel(-1, file, 0)
 
-        else:
-            mixer.Mix_Resume(-1)
+    else:
+        mixer.Mix_Resume(-1)
 
 
 def pause():
-        mixer.Mix_Pause(-1)
+    mixer.Mix_Pause(-1)
 
 
 def stop():
-        mixer.Mix_FadeOutChannel(-1, 1000)
+    mixer.Mix_FadeOutChannel(-1, 1000)
 
 # https://youtu.be/_RGp-Cynxkg
 def download():
@@ -37,12 +38,12 @@ def download():
     ydl_options = {
         "outtmpl": f"tracks/{len(os.listdir('./tracks'))}",
         "format": "bestaudio/best",
-        # "ffmpeg-location": "./ffmpeg/bin/ffmpeg.exe",
-        "ffmpeg-location": "ffmpeg/bin/ffmpeg.exe",
+        "ffmpeg-location": "./ffmpeg/bin/ffmpeg.exe",
+        # "ffmpeg-location": "ffmpeg/bin/ffmpeg.exe",
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
             "preferredcodec": "mp3",
-            "preferredquality": "44.1",
+            "preferredquality": "44.1"
         }]
         }
 
@@ -54,6 +55,8 @@ def download():
         title = info.get("title", None)
         duration = info.get("duration", None)
         views = info.get("view_count", None)
+    
+    playlist.config(listvariable=tk.Variable(value=os.listdir("./tracks")), height=len(os.listdir("./tracks")))
 
 root = tk.Tk()
 root.title("Music Player")
@@ -75,5 +78,9 @@ stop_button.grid(row=3, column=0, padx=10, pady=0)
 
 dl_button = tk.Button(root, text="Download", command=download)
 dl_button.grid(row=1, column=1, padx=10, pady=0)
+
+playlist = tk.Listbox(root, listvariable=tk.Variable(value=os.listdir("./tracks")), selectmode="browse", height=len(os.listdir("./tracks")), exportselection=False)
+playlist.bind("<<ListboxSelect>>", play)
+playlist.grid(row=4, column=0, padx=40, pady=40)
 
 root.mainloop()
