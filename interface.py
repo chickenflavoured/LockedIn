@@ -40,23 +40,30 @@ def main_menu():
     presentation_btn = tk.Button(window, text = "Presentation Helper", command = oral_helper)
     presentation_btn.grid(row=1, column=0, padx=40, pady=40)
 
-    timer_btn = tk.Button(window, text = "Focus Timer", command = focus_timer)
+    timer_btn = tk.Button(window, text = "Study Timer", command = focus_timer)
     timer_btn.grid(row=0, column=1, padx=40, pady=40)
 
     td_btn = tk.Button(window, text = "To-Do List", command = td_list)
     td_btn.grid(row=1, column=1, padx=40, pady=40)
 
+    td_btn = tk.Button(window, text = "Study Music", command = music)
+    td_btn.grid(row=2, column=0, padx=40, pady=40)
+
+
 def citation_machine():
-    subprocess.Popen(["python", "citations_old.py"])
+    subprocess.Popen(["python", "citations.py"])
 
 def oral_helper():
     subprocess.Popen(["python", "oral.py"])
 
 def focus_timer():
-    subprocess.Popen(["python", "timers.py"])
+    subprocess.Popen(["python", "study_timers.py"])
 
 def td_list():
     subprocess.Popen(["python", "task_interface.py"])
+
+def music():
+    subprocess.Popen(["python", "music.py"])
 
 # Function executes when button is pressed
 start_btn = tk.Button(window, text = "Start", command = main_menu)
