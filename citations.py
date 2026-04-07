@@ -4,60 +4,83 @@ from tkinter import ttk
 
 def get_entry():
 
+    # List where citation features are added
     f.config(state="normal")
     f.delete(1.0, tk.END)
+
+    # Temporary list that will hold all the citation features
+    temp_list = []
 
     # Make another list - instead of f.insert - insert into another list. Then, use a for loop to run through that new list, and at the end insert the value into f list with a period or comma after 
     # ^ this is how to get rid of the issue of the periods and commas because right now, if you leave an empty space, it will still input a comma/period
 
-    author = f"{ln.get()}, {fn.get()[0]}. "
-    f.insert(1.0, author)
+    author = f"{ln.get()}, {fn.get()[0]}"
+    temp_list.insert(1, author)
 
-    time = f"({date.get()}). "
-    f.insert(2.0, time)
+    time = f"({date.get()})"
+    temp_list.insert(2, time)
 
-    ititle = f"*{variables["ititle"][0].get()}*. "
-    f.insert(3.0, ititle)
+    ititle = f"*{variables["ititle"][0].get()}*"
+    temp_list.insert(3, ititle)
 
-    title = f"{variables["title"][0].get()}. "
-    f.insert(3.0, title)
+    title = f"{variables["title"][0].get()}"
+    temp_list.insert(3, title)
 
-    episode = f"({variables["episodes"][0].get()}). "
-    f.insert(4.0, episode)
+    years = f"({variables["sy"][0].get()}-{variables["ey"][0].get()})"
+    temp_list.insert(4, years)
 
-    edition = f"{variables["edition"][0].get()}. "
-    f.insert(5.0, edition)
+    episode = f"({variables["episode"][0].get()})"
+    temp_list.insert(5, episode)
 
-    volume = f"*{variables["volume"][0].get()}*. "
-    f.insert(6.0, volume)
+    edition = f"{variables["edition"][0].get()}"
+    temp_list.insert(6, edition)
+
+    volume = f"*{variables["volume"][0].get()}*"
+    temp_list.insert(7, volume)
 
     # Issue and volume are sometimes the same
-    issue = f"*{variables["issue"][0].get()}*. "
-    f.insert(6.0, issue)
+    issue = f"*{variables["issue"][0].get()}*"
+    temp_list.insert(7, issue)
 
-    type = f"[{variables["type"][0].get()}]. "
-    f.insert(7.0, type)
+    type = f"[{variables["type"][0].get()}]"
+    temp_list.insert(8, type)
 
-    album = f"{variables["album"][0].get()}. "
-    f.insert(8.0, album)
+    album = f"{variables["album"][0].get()}"
+    temp_list.insert(9, album)
 
-    source = f"{variables["source"][0].get()}. "
-    f.insert(.0, source)
+    source = f"{variables["source"][0].get()}"
+    temp_list.insert(10, source)
 
-    isource = f"*{variables["isource"][0].get()}*. "
-    f.insert(.0, isource)
+    isource = f"*{variables["isource"][0].get()}*"
+    temp_list.insert(10, isource)
 
-    city = f"{variables["city"][0].get()}, "
-    f.insert(.0, city)
+    institution = f"*{variables["institution"][0].get()}"
+    temp_list.insert(11, institution)
 
-    country = f"{variables["city"][0].get()}"
-    f.insert(.0), country
+    pub = f"{variables["pub"][0].get()}"
+    temp_list.insert(12, pub)
 
-    pub = f"{variables["pub"][0].get()}. "
-    f.insert(.0, pub)
+    ipub = f"*{variables["ipub"][0].get()}*"
+    temp_list.insert(13, ipub)
 
-    ipub = f"*{variables["ipub"][0].get()}*. "
-    f.insert(.0, ipub)
+    pages = f"(pp. {variables["sp"][0].get()}-{variables["ep"][0].get()})"
+    temp_list.insert(14, pages)
+
+    location = f"{variables["city"][0].get()}, {variables["country"][0].get()}"
+    temp_list.insert(15, location)
+
+    doi = f"{variables["doi"][0].get()}"
+    temp_list.insert(16, doi)
+
+    url = f"{variables["url"][0].get()}"
+    temp_list.insert(16, url)
+
+    accessed = f"{variables["accessed"][0].get()}"
+    temp_list.insert(17, accessed)
+
+    for i in temp_list:
+
+        f.insert(tk.END, i + ". ")
 
 
     f.config(state="disabled")
