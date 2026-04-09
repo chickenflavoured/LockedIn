@@ -14,13 +14,15 @@ FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg/bin/ffmpeg.exe")
 mixer.Mix_OpenAudio(44100, sdl2.AUDIO_S16SYS, 2, 2048)
 
 def play(event):
-    if not mixer.Mix_Playing(-1):
-        print(playlist.get(playlist.curselection()))
-        file = mixer.Mix_LoadWAV(f"./tracks/{playlist.get(playlist.curselection())}".encode("utf-8"))
-        mixer.Mix_PlayChannel(-1, file, 0)
+    if mixer.Mix_Playing(-1):
+        mixer.Mix_HaltChannel(-1)
 
-    else:
-        mixer.Mix_Resume(-1)
+    print(playlist.get(playlist.curselection()))
+    file = mixer.Mix_LoadWAV(f"./tracks/{playlist.get(playlist.curselection())}".encode("utf-8"))
+    mixer.Mix_PlayChannel(-1, file, 0)
+
+def resume():
+    mixer.Mix_Resume(-1)
 
 
 def pause():
@@ -58,16 +60,17 @@ def download():
     
     playlist.config(listvariable=tk.Variable(value=os.listdir("./tracks")), height=len(os.listdir("./tracks")))
 
+
 root = tk.Tk()
 root.title("Music Player")
-root.geometry(f"480x360")
+root.geometry("480x360")
 
 is_playing = False
 
 link = tk.Entry(root)
 link.grid(row=0, column=0)
 
-play_button = tk.Button(root, text="Play", command=play)
+play_button = tk.Button(root, text="Resume", command=resume)
 play_button.grid(row=1, column=0, padx=10, pady=0)
 
 pause_button = tk.Button(root, text="Pause", command=pause)
