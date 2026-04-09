@@ -9,7 +9,23 @@ root.geometry("600x720")
 
 samplerate = 44100
 
-recording = sd.rec(6 * samplerate, samplerate=samplerate, channels=2)
+recording = np.array()
+
+def record():
+
+    print("Recording")
+    recording = sd.rec(4 * samplerate, samplerate=samplerate, channels=2)
+
+
+def playback():
+
+    print("Playing")
+    sd.play(recording)
 
 
 root.mainloop()
+
+
+sd.wait()
+print("Done")
+
