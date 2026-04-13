@@ -72,7 +72,7 @@ def get_entry():
     doi = f"{variables["doi"][0].get()}"
     temp_list.insert(16, doi)
 
-    url = f"{variables["url"][0].get()}"
+    url = f"{url.get()}"
     temp_list.insert(16, url)
 
     accessed = f"{variables["accessed"][0].get()}"
@@ -107,8 +107,9 @@ def get_entry():
     for i in temp_list:
         print(i)
         print(formats[i])
+        print(i=="" and i=="," and i=="-")
 
-        if i != "" or i != "," or i != "-":
+        if i != "" and i != "," and i != "-":
             if formats[i] == "n":
                 f.insert(tk.END, i + ". ")
             elif formats[i] == "*i*":
@@ -196,7 +197,6 @@ variables = {
     "sy": [tk.Entry(fields)],
     "ey": [tk.Entry(fields)],
     "doi": [tk.Entry(fields)],
-    "url": [tk.Entry(fields)],
     "accessed": [tk.Entry(fields)],
 
     "media": [tk.Radiobutton(fields, text="Post", value="post"),
