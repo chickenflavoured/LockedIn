@@ -6,12 +6,13 @@ Gabriel Abdalla
 History:
     January 13, 2026 - Program Creation
     March 25, 2026 - Program Completion
+    April 14. 2026 - JSON UPDATE
 """
 
 from taskclass import Task_List, Task
 import tkinter as tk
 from tkinter import messagebox
-import random
+import random, json
 
 # ----- Constants -----
 WIDTH = 500
@@ -112,7 +113,24 @@ canvas.bind("<Leave>", lambda e: canvas.unbind_all("<MouseWheel>"))
 
 my_value = tk.StringVar()
 
+# Load data from json file.
+Task_List.load_from_json()
+
 # ----- Functions -----
+
+def on_closing():
+    """
+    Saves data to JSON and closes the application.
+    """
+    try:
+        # Save the data to json
+        Task_List.save_to_json() 
+        print("Data saved successfully.")
+    except Exception as e:
+        messagebox.showerror("Save Error", f"Failed to save tasks: {e}")
+    
+    root.destroy()
+
 
 def generate_number_string():
     """
@@ -172,7 +190,7 @@ def on_enter(state, event):
     # If in the task entering screen, save the deadline
     elif state.current_screen == "add_task" and state.edited_value == "deadline":
         try:
-            Task_List.create_task(state.current_message, generate_number_string(), my_value.get()) # Create a task with the information.
+            t = Task_List.create_task(state.current_message, generate_number_string(), my_value.get()) # Create a task with the information.
             state.current_message = None
             exit_button_choices(state)
             handle_menu(state, "main_button")
@@ -372,7 +390,7 @@ def exit_button_choices(state):
         set_screen(state, "menu")
 
     else:
-        root.destroy()
+        on_closing()
 
 def task_options_for_interface(option, state):
     """
@@ -562,5 +580,8 @@ instructions_msg.grid(row=1, column=0, pady=5)
 
 # Task list area
 completed_task_list_button.grid(row=1, column=0, pady=5)
+
+# Function to activate when the user clicks x.
+root.protocol("WM_DELETE_WINDOW", on_closing)
 
 root.mainloop()

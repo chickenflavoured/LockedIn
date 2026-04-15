@@ -1,14 +1,16 @@
 """
-Task Interface
+Task Class
 UI Program involving tasks
 ICS4U
 Gabriel Abdalla
 History:
     January 13, 2026 - Program Creation
     March 25, 2026 - Program Completion
+    April 14. 2026 - JSON UPDATE
 """
 
 from datetime import date
+import json
 
 class Task_List():
     """
@@ -21,7 +23,11 @@ class Task_List():
         + remove_task(task): void
         + complete_task(task): void
         + uncomplete_task(task): void
-        + create_task(msg, idd, deadline): void
+        + create_task(msg, idd, deadline): Task
+        + to_a_dictionary(): dict
+        + load_from_json(filename): void
+        + save_to_json(): void
+        + from_a_dictionary(data, type): Task
     """
     
     # Class Attributes
@@ -80,8 +86,83 @@ class Task_List():
             msg (str)
             idd (str)
             deadline(str)
+        Return:
+            (Task)
         """
-        _ = Task(msg, idd, deadline)
+        return Task(msg, idd, deadline)
+
+    @staticmethod
+    def to_a_dictionary():
+        """
+        Converts the two task list's tasks into dictionaries for use in json
+        Args:
+            (dict)
+        """
+        return {
+            "task_list": [task.to_a_dictionary() for task in Task_List.task_list],
+            "completed_task_list": [task.to_a_dictionary() for task in Task_List.completed_task_list]
+        }
+    
+    @staticmethod
+    def load_from_json(filename="savedfile.json"):
+        """
+        Loads the dictionaries from json and converts them back into tasks, restoring data from previous use.
+        Args:
+            filename (str) - The json file itself
+
+        Returns:
+            None
+        """
+        try:
+            with open(filename, "r") as f:
+                # This will fail if the file is empty or doesn't exist
+                data = json.load(f)
+                
+            # Rebuilds the tasks for the active task list.
+            for task_data in data.get("task_list", []):
+                t = Task_List.from_a_dictionary(task_data, "active")
+
+            # Rebuilds the tasks for the completed task list.
+            for task_data in data.get("completed_task_list", []):
+                ct = Task_List.from_a_dictionary(task_data, "completed")
+
+        # Error checking to handle files with error or corruption. 
+        except (FileNotFoundError, json.JSONDecodeError):
+            print("File cleared. File was missing or empty.")
+            Task_List.task_list = []
+            Task_List.completed_task_list = []
+
+    @staticmethod
+    def save_to_json():
+        """
+        Saves the tasks in both lists as dictionaries and exports them to the json file.
+        """
+        data = Task_List.to_a_dictionary()
+        print(f"Data being saved is: {data}") 
+        with open("savedfile.json", "w") as f:
+            json.dump(data, f, indent=4)
+
+    @staticmethod
+    def from_a_dictionary(data, type):
+        """
+        Extracts the data from the JSON file, returning the dictionaries as tasks in their respective lists.
+        Args:
+            data (dict) - dictionary with all JSON data for a task
+            type (str)  - determines whether it's a completed task or an incomplete task
+
+        Returns:
+            task (Task)
+        """
+        task = Task_List.create_task(data["task_message"], data["task_idd"], data["deadline"])
+        task.date_of_creation = data["date_of_creation"]
+
+        if type == "completed":
+            task.date_of_completion = data["date_of_completion"]
+            Task_List.completed_task_list.append(task)
+            Task_List.task_list.remove(task)
+
+
+        return task
                 
         
 class Task():
@@ -105,6 +186,7 @@ class Task():
         - deadline(self, val): void
         + date_verification(val): bool
         + __repr__(self): str
+        + to_a_dictionary(self): dict
     """
     def __init__(self, task_message, task_idd, deadline):
         """
@@ -262,3 +344,19 @@ class Task():
             f"creation={self.date_of_creation!r}, "
             f"deadline={self.deadline!r}" 
         )
+    
+    def to_a_dictionary(self):
+        """
+        Turns a task into a dictionary for json use.
+        Args:
+            None
+        Returns:
+            (dict)
+        """
+        return {
+            "task_message": self.task_message,
+            "task_idd": self.task_idd,
+            "date_of_completion": self.date_of_completion,
+            "date_of_creation": self.date_of_creation,
+            "deadline": self.deadline
+        }
