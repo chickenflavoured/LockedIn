@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-def get_entry():
+def get_entry(want_clear):
 
     # List where citation features are added
     f.config(state="normal")
@@ -17,70 +17,125 @@ def get_entry():
     author = f"{ln.get()}, {fn.get()[0]}"
     temp_list.insert(1, author)
 
-    time = f"({date.get()})"
+    time = f"{date.get()}"
     temp_list.insert(2, time)
 
-    ititle = f"*{variables["ititle"][0].get()}*"
+    ititle = f"{variables["ititle"][0].get()}"
     temp_list.insert(3, ititle)
 
     title = f"{variables["title"][0].get()}"
-    temp_list.insert(3, title)
+    temp_list.insert(4, title)
 
-    years = f"({variables["sy"][0].get()}-{variables["ey"][0].get()})"
-    temp_list.insert(4, years)
+    years = f"{variables["sy"][0].get()}-{variables["ey"][0].get()}"
+    temp_list.insert(5, years)
 
-    episode = f"({variables["episode"][0].get()})"
-    temp_list.insert(5, episode)
+    episode = f"{variables["episode"][0].get()}"
+    temp_list.insert(6, episode)
 
     edition = f"{variables["edition"][0].get()}"
-    temp_list.insert(6, edition)
+    temp_list.insert(7, edition)
 
-    volume = f"*{variables["volume"][0].get()}*"
-    temp_list.insert(7, volume)
+    volume = f"{variables["volume"][0].get()}"
+    temp_list.insert(8, volume)
 
     # Issue and volume are sometimes the same
-    issue = f"*{variables["issue"][0].get()}*"
-    temp_list.insert(7, issue)
+    issue = f"{variables["issue"][0].get()}"
+    temp_list.insert(9, issue)
 
-    type = f"[{variables["type"][0].get()}]"
-    temp_list.insert(8, type)
+    type = f"{variables["type"][0].get()}"
+    temp_list.insert(10, type)
 
     album = f"{variables["album"][0].get()}"
-    temp_list.insert(9, album)
+    temp_list.insert(11, album)
 
     source = f"{variables["source"][0].get()}"
-    temp_list.insert(10, source)
+    temp_list.insert(12, source)
 
-    isource = f"*{variables["isource"][0].get()}*"
-    temp_list.insert(10, isource)
+    isource = f"{variables["isource"][0].get()}"
+    temp_list.insert(13, isource)
 
-    institution = f"*{variables["institution"][0].get()}"
-    temp_list.insert(11, institution)
+    institution = f"{variables["institution"][0].get()}"
+    temp_list.insert(14, institution)
 
     pub = f"{variables["pub"][0].get()}"
-    temp_list.insert(12, pub)
+    temp_list.insert(15, pub)
 
-    ipub = f"*{variables["ipub"][0].get()}*"
-    temp_list.insert(13, ipub)
+    ipub = f"{variables["ipub"][0].get()}"
+    temp_list.insert(16, ipub)
 
-    pages = f"(pp. {variables["sp"][0].get()}-{variables["ep"][0].get()})"
-    temp_list.insert(14, pages)
+    pages = f"{variables["sp"][0].get()}-{variables["ep"][0].get()}"
+    temp_list.insert(17, pages)
 
     location = f"{variables["city"][0].get()}, {variables["country"][0].get()}"
-    temp_list.insert(15, location)
+    temp_list.insert(18, location)
 
     doi = f"{variables["doi"][0].get()}"
-    temp_list.insert(16, doi)
+    temp_list.insert(19, doi)
 
-    url = f"{variables["url"][0].get()}"
-    temp_list.insert(16, url)
+    link = f"{url.get()}"
+    temp_list.insert(20, link)
 
     accessed = f"{variables["accessed"][0].get()}"
-    temp_list.insert(17, accessed)
+    temp_list.insert(21, accessed)
 
-    for i in temp_list:
+    formats = {
+            
+        author : "n",
+        ititle : "*i*",
+        title : "n",
+        pub: "n",
+        ipub: "*i*",
+        episode : "(b)",
+        edition : "n",
+        volume : "*i*",
+        issue : "*i*",
+        type: "[sb]",
+        source : "n",
+        isource : "*i*",
+        album : "n",
+        location : "n",
+        institution : "*i*",
+        time : "(b)",
+        pages : "(pp.)",
+        years : "(b)",
+        doi : "n",
+        link: "n",
+        accessed: "a"
 
-        f.insert(tk.END, i + ". ")
+    }
+
+    print(temp_list)
+
+    if want_clear:
+        for j in variables:
+            if j not in ("media", "isep", "podtype", "degree"):
+                variables[j][0].delete(0, tk.END)
+
+        ln.delete(0, tk.END)
+        fn.delete(0, tk.END)
+        date.delete(0, tk.END)
+        url.delete(0, tk.END)
+    else:
+
+        for i in temp_list:
+            print(i)
+            print(formats[i])
+            print(i=="" and i==", " and i=="-")
+
+            if i != "" and i != ", " and i != "-":
+                if formats[i] == "n":
+                    f.insert(tk.END, i + ". ")
+                elif formats[i] == "*i*":
+                    f.insert(tk.END, f"*{i}*")
+                elif formats[i] == "(b)":
+                    f.insert(tk.END, f"({i})")
+                elif formats[i] == "[sb]":
+                    f.insert(tk.END, f"[{i}]")
+                elif formats[i] == "(pp.)":
+                    f.insert(tk.END, f"(pp. {i})")
+                elif formats[i] == "a":
+                    f.insert(tk.END, f"Accessed {i}")
+            
 
 
     f.config(state="disabled")
@@ -101,9 +156,6 @@ def select_type(event):
             widget.grid(row=i, column=j + 1)
 
 
-FORMAT = {
-    "name"
-}
 
 
 def select_style(event):
@@ -158,7 +210,6 @@ variables = {
     "sy": [tk.Entry(fields)],
     "ey": [tk.Entry(fields)],
     "doi": [tk.Entry(fields)],
-    "url": [tk.Entry(fields)],
     "accessed": [tk.Entry(fields)],
 
     "media": [tk.Radiobutton(fields, text="Post", value="post"),
@@ -279,25 +330,17 @@ style.grid(row=2, column=0)
 """
 
 
-tk.Label(general, text="Author's first name").grid(row=3, column=2)
-tk.Label(general, text="Author's middle name").grid(row=4, column=2)
+tk.Label(general, text="Author's first name").grid(row=4, column=2)
 tk.Label(general, text="Author's last name").grid(row=5, column=2)
-tk.Label(general, text="Author nickname").grid(row=6, column=2)
 tk.Label(general, text="Publication date").grid(row=4, column=4)
 tk.Label(general, text="URL").grid(row=5, column=4)
 
 
 fn = tk.Entry(general)
-fn.grid(row=3, column=3)
-
-mn = tk.Entry(general)
-mn.grid(row=4, column=3)
+fn.grid(row=4, column=3)
 
 ln = tk.Entry(general)
 ln.grid(row=5, column=3)
-
-nn = tk.Entry(general)
-nn.grid(row=6, column=3)
 
 date = tk.Entry(general)
 date.grid(row=4, column=5)
@@ -315,8 +358,11 @@ f.grid(row=0, column=0)
 style = tk.OptionMenu(textframe, tk.StringVar(general, "Style..."), "APA", "MLA", "Chicago")
 style.grid(row=1, column=0, padx=10, pady=10)
 
-button = tk.Button(general, text="Update", command=get_entry)
+button = tk.Button(general, text="Update", command=lambda:get_entry(False))
 button.grid(row=7, column=2, padx=10, pady=10)
+
+clear = tk.Button(general, text="Clear", command=lambda:get_entry(True))
+clear.grid(row=11, column=2, padx=10, pady=6)
 
 
 root.mainloop()
