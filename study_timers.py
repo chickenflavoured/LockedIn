@@ -6,7 +6,7 @@ import threading
 window = tk.Tk()
 
 HEIGHT = 200
-WIDTH = 250
+WIDTH = 400
 # Window display size
 window.geometry(f"{WIDTH}x{HEIGHT}")
 
