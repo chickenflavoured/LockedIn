@@ -24,7 +24,7 @@ class Timer:
         
         self.pause_event.set()
         timer_display = tk.Label(window)
-        timer_display.grid(row = 4, column = 4)
+        timer_display.grid(row = 5, column = 4)
 
         # Loop timer for every session
         for num in range(self.sessions):
@@ -81,7 +81,7 @@ class Timer:
 
         self.pause_event.set()
         timer_display = tk.Label(window)
-        timer_display.grid(row = 4, column = 4)
+        timer_display.grid(row = 5, column = 4)
 
         while self.running:
 
