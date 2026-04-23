@@ -139,14 +139,14 @@ def main(choice, is_stopwatch):
         session_entry = tk.Entry(window, textvariable = session_var, validate = "key", validatecommand = check_valid)
 
         # Labels
-        rest_label.grid(row = 2, column = 0)
-        longrest_label.grid(row = 3, column = 0)
-        session_label.grid(row = 4, column = 0)
+        rest_label.grid(row = 2, column = 0, padx = 10, pady = 2)
+        longrest_label.grid(row = 3, column = 0, padx = 10, pady = 2)
+        session_label.grid(row = 4, column = 0, padx = 10, pady = 2)
 
         # Entries
-        rest_entry.grid(row = 2, column = 1)
-        longrest_entry.grid(row = 3, column = 1)
-        session_entry.grid(row = 4, column = 1)
+        rest_entry.grid(row = 2, column = 1, padx = 10, pady = 2)
+        longrest_entry.grid(row = 3, column = 1, padx = 10, pady = 2)
+        session_entry.grid(row = 4, column = 1, padx = 10, pady = 2)
 
         # Input Validation
 
@@ -158,10 +158,10 @@ def main(choice, is_stopwatch):
         time_entry = tk.Entry(window, textvariable = time_var, validate = "key", validatecommand = check_valid)
         
         # Labels
-        time_label.grid(row = 0, column = 0)
+        time_label.grid(row = 0, column = 0, padx = 10, pady = 5)
 
         # Entries
-        time_entry.grid(row = 0, column = 1)
+        time_entry.grid(row = 0, column = 1, padx = 10, pady = 5)
 
 
     # Buttons initialization
@@ -171,16 +171,16 @@ def main(choice, is_stopwatch):
     # -- Grid Placements --
 
     # Buttons
-    start_btn.grid(row = 5, column = 0)
-    pause_btn.grid(row = 6, column = 0)
+    start_btn.grid(row = 5, column = 0, padx = 10, pady = 2)
+    pause_btn.grid(row = 6, column = 0, padx = 10, pady = 2)
     pause_btn.grid_remove()
 
 pomodoro_btn = tk.Button(window, text = "Pomodoro", command = lambda: main("pomodoro", False))
 countdown_btn = tk.Button(window, text = "Countdown", command = lambda: main("countdown", False))
 stopwatch_btn = tk.Button(window, text = "Stopwatch", command = lambda: main("stopwatch", True))
 
-pomodoro_btn.grid(row = 2, column = 1)
-countdown_btn.grid(row = 2, column = 3)
-stopwatch_btn.grid(row = 2, column = 5)
+pomodoro_btn.grid(row = 2, column = 1, padx = 5, pady = 40)
+countdown_btn.grid(row = 2, column = 3, padx = 5, pady = 40)
+stopwatch_btn.grid(row = 2, column = 5, padx = 5, pady = 40)
 
 window.mainloop()
