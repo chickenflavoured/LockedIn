@@ -18,6 +18,7 @@ import random, json
 WIDTH = 500
 HEIGHT = 400
 
+
 # ----- Classes -----
 class AppState:
     """
@@ -58,6 +59,10 @@ root.rowconfigure(0, weight=1)
 main_frame = tk.Frame(root)
 main_frame.grid(row=0, column=0, sticky="nsew")
 main_frame.columnconfigure(0, weight=1)
+
+bg = tk.PhotoImage(file = "task_list.png")
+bg_label = tk.Label(main_frame, image = bg)
+bg_label.place(x = 0, y = 0)
 
 # Top Label
 label = tk.Label(main_frame, text="TASKS", font=("Arial", 24))
