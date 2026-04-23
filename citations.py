@@ -126,13 +126,13 @@ def get_entry(want_clear):
                 if formats[i] == "n":
                     f.insert(tk.END, i + ". ")
                 elif formats[i] == "*i*":
-                    f.insert(tk.END, f"*{i}*")
+                    f.insert(tk.END, f"*{i}*. ")
                 elif formats[i] == "(b)":
-                    f.insert(tk.END, f"({i})")
+                    f.insert(tk.END, f"({i}). ")
                 elif formats[i] == "[sb]":
-                    f.insert(tk.END, f"[{i}]")
+                    f.insert(tk.END, f"[{i}]. ")
                 elif formats[i] == "(pp.)":
-                    f.insert(tk.END, f"(pp. {i})")
+                    f.insert(tk.END, f"(pp. {i}). ")
                 elif formats[i] == "a":
                     f.insert(tk.END, f"Accessed {i}")
             
@@ -170,8 +170,16 @@ root = tk.Tk()
 root.title("Citation Machine")
 root.geometry(f"960x720")
 
+bg = tk.PhotoImage(file = "citations.png")
+bg_label = tk.Label(root, image = bg)
+bg_label.place(x = 0, y = 0)
+
 general = tk.Frame(root)
 general.grid(row=1, column=0)
+
+bg2 = tk.PhotoImage(file = "citations.png")
+bg2_label = tk.Label(general, image = bg2)
+bg2_label.place(x = 0, y = 0)
 
 fields = tk.Frame(root)
 fields.grid(row=8, column=0)

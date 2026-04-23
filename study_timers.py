@@ -10,6 +10,10 @@ WIDTH = 400
 # Window display size
 window.geometry(f"{WIDTH}x{HEIGHT}")
 
+bg = tk.PhotoImage(file = "study_timers.png")
+bg_label = tk.Label(window, image = bg)
+bg_label.place(x = 0, y = 0)
+
 def validation(P):
 
     if P == 0 or P.isdigit():
