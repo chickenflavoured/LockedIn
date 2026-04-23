@@ -11,15 +11,15 @@ WIDTH = 400
 # Window display size
 window.geometry(f"{WIDTH}x{HEIGHT}")
 
-bg = tk.PhotoImage(file = "main_interface.png")
-bg_label = tk.Label(window, image = bg)
-bg_label.place(x = 0, y = 0)
-
 # Track processes
 td_process = None
 
 # citation, oral helper, focus timer, td list
 windows_on = [False, False, False, False]
+
+bg = tk.PhotoImage(file = "main_interface.png")
+bg_label = tk.Label(window, image = bg)
+bg_label.place(x = 0, y = 0)
 
 
 def main_menu():
