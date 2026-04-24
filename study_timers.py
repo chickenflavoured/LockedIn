@@ -2,17 +2,29 @@ import tkinter as tk
 from tkinter import ttk
 from timers import Timer
 import threading
+# from tkextrafont import Font
+
 
 window = tk.Tk()
 
 HEIGHT = 200
 WIDTH = 400
+
 # Window display size
 window.geometry(f"{WIDTH}x{HEIGHT}")
 
 bg = tk.PhotoImage(file = "study_timers.png")
 bg_label = tk.Label(window, image = bg)
 bg_label.place(x = 0, y = 0)
+
+window.title("Lockedin Timers")
+img = tk.PhotoImage(file='lockedin_mascot.png')
+# The icon uses a .ico file so use iconphoto instead
+window.iconphoto(False, img)
+
+# Stops the user from entering full screen
+window.resizable(False, False) 
+
 
 def validation(P):
 
@@ -23,13 +35,14 @@ def validation(P):
 
     return valid
 
-def timer_finished(btn, p_btn, time_begun):
+def timer_finished(btn, p_btn, b_btn, time_begun):
 
     time_begun[1] = True
     btn.config(text = "Begin Timer")
     p_btn.grid_remove()
+    b_btn.grid()
 
-def start_timer_thread(timer, work_var, rest_var, longrest_var, session_var, time_begun, btn, p_btn):
+def start_timer_thread(timer, work_var, rest_var, longrest_var, session_var, time_begun, btn, p_btn, b_btn):
     """
     Starts running the countdown timer with a thread.
 
@@ -69,12 +82,13 @@ def start_timer_thread(timer, work_var, rest_var, longrest_var, session_var, tim
     longrest_var.set("")
     session_var.set("")
     
-    timer_done = lambda: timer_finished(btn, p_btn, time_begun)
+    timer_done = lambda: timer_finished(btn, p_btn, b_btn, time_begun)
 
     if time_begun[1]:
         time_begun[1] = False
         btn.config(text = "End Timer")
         p_btn.grid() # Pause button only shows up once the start button has been pressed
+        b_btn.grid_remove() # The user cannot go back unless the timer is over
         timer.running = True
 
         if not time_begun[2]:
@@ -89,6 +103,7 @@ def start_timer_thread(timer, work_var, rest_var, longrest_var, session_var, tim
         timer.running = False
         time_begun[1] = True
         btn.config(text = "Begin Timer")
+        b_btn.grid()
 
 def pause_timer_thread(timer, time_paused, btn):
     
@@ -105,9 +120,9 @@ def pause_timer_thread(timer, time_paused, btn):
 def main(choice, is_stopwatch):
 
     # Remove the buttons
-    pomodoro_btn.destroy()
-    countdown_btn.destroy()
-    stopwatch_btn.destroy()
+    for item in window.winfo_children():
+        if item != bg_label:
+            item.destroy()
 
     # Create instance of Timer Class
     timer = Timer(0, 0, 0, 0, True)
@@ -165,22 +180,33 @@ def main(choice, is_stopwatch):
 
 
     # Buttons initialization
-    start_btn = tk.Button(window, text = "Begin Timer", command = lambda: start_timer_thread(timer, time_var, rest_var, longrest_var, session_var, time_paused_and_started, start_btn, pause_btn)) # Lambda allows command to pass arguments without immediately executing function
+    start_btn = tk.Button(window, text = "Begin Timer", command = lambda: start_timer_thread(timer, time_var, rest_var, longrest_var, session_var, time_paused_and_started, start_btn, pause_btn, back_btn)) # Lambda allows command to pass arguments without immediately executing function
     pause_btn = tk.Button(window, text = "Pause", command = lambda: pause_timer_thread(timer, time_paused_and_started, pause_btn))
+    back_btn = tk.Button(window, text = "Back", command = start)
 
     # -- Grid Placements --
 
     # Buttons
     start_btn.grid(row = 5, column = 0, padx = 10, pady = 2)
     pause_btn.grid(row = 6, column = 0, padx = 10, pady = 2)
+    back_btn.grid(row = 6, column = 0, padx = 10, pady = 2)
     pause_btn.grid_remove()
 
-pomodoro_btn = tk.Button(window, text = "Pomodoro", command = lambda: main("pomodoro", False))
-countdown_btn = tk.Button(window, text = "Countdown", command = lambda: main("countdown", False))
-stopwatch_btn = tk.Button(window, text = "Stopwatch", command = lambda: main("stopwatch", True))
+def start():
 
-pomodoro_btn.grid(row = 2, column = 1, padx = 5, pady = 40)
-countdown_btn.grid(row = 2, column = 3, padx = 5, pady = 40)
-stopwatch_btn.grid(row = 2, column = 5, padx = 5, pady = 40)
+    # Clear all the buttons on screen
+    for item in window.winfo_children():
+        if item != bg_label:
+            item.destroy()
+
+    pomodoro_btn = tk.Button(window, text = "Pomodoro", command = lambda: main("pomodoro", False))
+    countdown_btn = tk.Button(window, text = "Countdown", command = lambda: main("countdown", False))
+    stopwatch_btn = tk.Button(window, text = "Stopwatch", command = lambda: main("stopwatch", True))
+
+    pomodoro_btn.grid(row = 2, column = 1, padx = 5, pady = 10)
+    countdown_btn.grid(row = 2, column = 3, padx = 5, pady = 10)
+    stopwatch_btn.grid(row = 2, column = 5, padx = 5, pady = 10)
+
+start()
 
 window.mainloop()
