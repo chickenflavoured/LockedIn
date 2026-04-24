@@ -24,7 +24,7 @@ class Timer:
         
         self.pause_event.set()
         timer_display = tk.Label(window)
-        timer_display.grid(row = 5, column = 4)
+        timer_display.grid(row = 5, column = 1)
 
         # Loop timer for every session
         for num in range(self.sessions):
@@ -93,5 +93,5 @@ class Timer:
 
             time.sleep(0.1)
 
-        timer_display.grid_forget() # remove display if the stopwatch is no longer running]
+        timer_display.grid_forget() # remove display if the stopwatch is no longer running
         window.after(0, timer_done)
