@@ -18,7 +18,6 @@ import random, json
 WIDTH = 500
 HEIGHT = 400
 
-
 # ----- Classes -----
 class AppState:
     """
@@ -52,6 +51,14 @@ state = AppState()
 root = tk.Tk()
 root.title("Task Window")
 root.geometry(f"{WIDTH}x{HEIGHT}")
+
+root.title("Lockedin Tasks")
+img = tk.PhotoImage(file='lockedin_mascot.png')
+# The icon uses a .ico file so use iconphoto instead
+root.iconphoto(False, img)
+
+# Stops the user from entering full screen
+root.resizable(False, False) 
 
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
