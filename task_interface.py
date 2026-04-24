@@ -49,7 +49,6 @@ state = AppState()
 # ----- Intialization -----
 
 root = tk.Tk()
-root.title("Task Window")
 root.geometry(f"{WIDTH}x{HEIGHT}")
 
 root.title("Lockedin Tasks")
