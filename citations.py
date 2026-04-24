@@ -170,7 +170,7 @@ root = tk.Tk()
 root.title("Citation Machine")
 root.geometry(f"960x720")
 
-root.title("Lockedin Timers")
+root.title("Lockedin Citations")
 img = tk.PhotoImage(file='lockedin_mascot.png')
 # The icon uses a .ico file so use iconphoto instead
 root.iconphoto(False, img)
