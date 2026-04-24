@@ -21,6 +21,14 @@ bg = tk.PhotoImage(file = "main_interface.png")
 bg_label = tk.Label(window, image = bg)
 bg_label.place(x = 0, y = 0)
 
+window.title("Lockedin Menu")
+img = tk.PhotoImage(file='lockedin_mascot.png')
+# The icon uses a .ico file so use iconphoto instead
+window.iconphoto(False, img)
+
+# Stops the user from entering full screen
+window.resizable(False, False) 
+
 
 def main_menu():
     start_btn.destroy()
