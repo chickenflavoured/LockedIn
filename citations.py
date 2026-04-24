@@ -170,6 +170,14 @@ root = tk.Tk()
 root.title("Citation Machine")
 root.geometry(f"960x720")
 
+root.title("Lockedin Timers")
+img = tk.PhotoImage(file='lockedin_mascot.png')
+# The icon uses a .ico file so use iconphoto instead
+root.iconphoto(False, img)
+
+# Stops the user from entering full screen
+root.resizable(False, False) 
+
 bg = tk.PhotoImage(file = "citations.png")
 bg_label = tk.Label(root, image = bg)
 bg_label.place(x = 0, y = 0)
