@@ -8,6 +8,10 @@ import sdl2
 import sdl2.sdlmixer as mixer
 from tkextrafont import Font
 
+from ctypes import windll
+#windll.shcore.SetProcessDpiAwareness(1)
+
+
 # https://pypi.org/project/PySDL2/
 #FFmpegPostProcessor._ffmpeg_location.set("./ffmpeg/bin/ffmpeg.exe")
 
@@ -40,15 +44,17 @@ class Player:
         playlist_list.config(listvariable=tk.Variable(value=list(self.playlist.keys())), height=len(self.playlist))
 
 
-    def resume(self):
-        mixer.Mix_Resume(-1)
+    def toggle_pause(self, button):
+        if mixer.Mix_Paused(-1):
+            mixer.Mix_Resume(-1)
+            button.config(text="Pause")
+        else:
+            mixer.Mix_Pause(-1)
+            button.config(text="Resume")
 
 
-    def pause(self):
-        mixer.Mix_Pause(-1)
-
-
-    def stop(self):
+    def stop(self, pause_button):
+        pause_button.config(text="Pause")
         mixer.Mix_FadeOutChannel(-1, 500)
 
     # https://youtu.be/_RGp-Cynxkg
@@ -89,7 +95,14 @@ root = tk.Tk()
 root.title("Music Player")
 root.geometry("480x360")
 
-root.resizable(width=False, height=False)
+
+root.title("Lockedin Music Player")
+img = tk.PhotoImage(file='lockedin_mascot.png')
+# The icon uses a .ico file so use iconphoto instead
+root.iconphoto(False, img)
+
+# Stops the user from entering full screen
+root.resizable(False, False) 
 
 # THIS SETS THE FONT
 font = Font(file="sniglet.ttf", family="Sniglet")
@@ -105,13 +118,11 @@ link.grid(row=0, column=0)
 with open("playlistdata.json") as f:
     player = Player(json.load(f))
 
-play_button = tk.Button(root, text="Resume", command=player.resume)
+play_button = tk.Button(root, text="Pause")
+play_button.config(command=lambda: player.toggle_pause(play_button))
 play_button.grid(row=1, column=0, padx=10, pady=0)
 
-pause_button = tk.Button(root, text="Pause", command=player.pause)
-pause_button.grid(row=2, column=0, padx=10, pady=0)
-
-stop_button = tk.Button(root, text="Stop", command=player.stop)
+stop_button = tk.Button(root, text="Stop", command=lambda: player.stop(play_button))
 stop_button.grid(row=3, column=0, padx=10, pady=0)
 
 del_button = tk.Button(root, text="Delete", command=player.delete)
@@ -119,6 +130,7 @@ del_button.grid(row=4, column=0, padx=10, pady=0)
 
 dl_button = tk.Button(root, text="Download", command=player.download)
 dl_button.grid(row=1, column=1, padx=10, pady=0)
+
 
 playlist_list = tk.Listbox(root, 
                            listvariable=tk.Variable(value=list(player.playlist.keys())), 
