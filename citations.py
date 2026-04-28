@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-def get_entry(want_clear):
+def get_entry(want_clear, style_type):
 
     # List where citation features are added
     f.config(state="normal")
@@ -13,96 +13,184 @@ def get_entry(want_clear):
 
     # Make another list - instead of f.insert - insert into another list. Then, use a for loop to run through that new list, and at the end insert the value into f list with a period or comma after 
     # ^ this is how to get rid of the issue of the periods and commas because right now, if you leave an empty space, it will still input a comma/period
+    
+    if style_type == "MLA":
 
-    author = f"{ln.get()}, {fn.get()[0]}"
-    temp_list.insert(1, author)
+        author = f"{ln.get()}, {fn.get()}"
+        temp_list.insert(1, author)
 
-    time = f"{date.get()}"
-    temp_list.insert(2, time)
+        ititle = f"{variables["ititle"][0].get()}"
+        temp_list.insert(3, ititle)
 
-    ititle = f"{variables["ititle"][0].get()}"
-    temp_list.insert(3, ititle)
+        title = f"{variables["title"][0].get()}"
+        temp_list.insert(4, title)
 
-    title = f"{variables["title"][0].get()}"
-    temp_list.insert(4, title)
+        edition = f"{variables["edition"][0].get()}"
+        temp_list.insert(7, edition)
 
-    years = f"{variables["sy"][0].get()}-{variables["ey"][0].get()}"
-    temp_list.insert(5, years)
+        institution = f"{variables["institution"][0].get()}"
+        temp_list.insert(14, institution)
 
-    episode = f"{variables["episode"][0].get()}"
-    temp_list.insert(6, episode)
+        type = f"{variables["type"][0].get()}"
+        temp_list.insert(10, type)
 
-    edition = f"{variables["edition"][0].get()}"
-    temp_list.insert(7, edition)
+        album = f"{variables["album"][0].get()}"
+        temp_list.insert(11, album)
 
-    volume = f"{variables["volume"][0].get()}"
-    temp_list.insert(8, volume)
+        issue = f"{variables["issue"][0].get()}"
+        temp_list.insert(9, issue)
 
-    # Issue and volume are sometimes the same
-    issue = f"{variables["issue"][0].get()}"
-    temp_list.insert(9, issue)
+        source = f"{variables["source"][0].get()}"
+        temp_list.insert(12, source)
 
-    type = f"{variables["type"][0].get()}"
-    temp_list.insert(10, type)
+        isource = f"{variables["isource"][0].get()}"
+        temp_list.insert(13, isource)
 
-    album = f"{variables["album"][0].get()}"
-    temp_list.insert(11, album)
+        episode = f"{variables["episode"][0].get()}"
+        temp_list.insert(6, episode)
 
-    source = f"{variables["source"][0].get()}"
-    temp_list.insert(12, source)
+        pub = f"{variables["pub"][0].get()}"
+        temp_list.insert(15, pub)
 
-    isource = f"{variables["isource"][0].get()}"
-    temp_list.insert(13, isource)
+        ipub = f"{variables["ipub"][0].get()}"
+        temp_list.insert(16, ipub)
 
-    institution = f"{variables["institution"][0].get()}"
-    temp_list.insert(14, institution)
+        volume = f"{variables["volume"][0].get()}"
+        temp_list.insert(8, volume)
+        
+        location = f"{variables["city"][0].get()}, {variables["country"][0].get()}"
+        temp_list.insert(18, location)
 
-    pub = f"{variables["pub"][0].get()}"
-    temp_list.insert(15, pub)
+        time = f"{date.get()}"
+        temp_list.insert(2, time)
 
-    ipub = f"{variables["ipub"][0].get()}"
-    temp_list.insert(16, ipub)
+        pages = f"{variables["sp"][0].get()}-{variables["ep"][0].get()}"
+        temp_list.insert(17, pages)
 
-    pages = f"{variables["sp"][0].get()}-{variables["ep"][0].get()}"
-    temp_list.insert(17, pages)
+        doi = f"{variables["doi"][0].get()}"
+        temp_list.insert(19, doi)
 
-    location = f"{variables["city"][0].get()}, {variables["country"][0].get()}"
-    temp_list.insert(18, location)
+        link = f"{url.get()}"
+        temp_list.insert(20, link)
 
-    doi = f"{variables["doi"][0].get()}"
-    temp_list.insert(19, doi)
+        accessed = f"{variables["accessed"][0].get()}"
+        temp_list.insert(21, accessed)
 
-    link = f"{url.get()}"
-    temp_list.insert(20, link)
-
-    accessed = f"{variables["accessed"][0].get()}"
-    temp_list.insert(21, accessed)
-
-    formats = {
+        formats_m = {
             
         author : "n",
         ititle : "*i*",
         title : "n",
         pub: "n",
         ipub: "*i*",
-        episode : "(b)",
+        episode : "n",
         edition : "n",
         volume : "*i*",
         issue : "*i*",
-        type: "[sb]",
+        type: "n",
         source : "n",
         isource : "*i*",
         album : "n",
         location : "n",
-        institution : "*i*",
-        time : "(b)",
-        pages : "(pp.)",
-        years : "(b)",
+        institution : "c",
+        time : "n",
+        pages : "pp.",
         doi : "n",
         link: "n",
         accessed: "a"
 
-    }
+        }
+
+    else:
+
+        author = f"{ln.get()}, {fn.get()[0]}"
+        temp_list.insert(1, author)
+
+        time = f"{date.get()}"
+        temp_list.insert(2, time)
+
+        ititle = f"{variables["ititle"][0].get()}"
+        temp_list.insert(3, ititle)
+
+        title = f"{variables["title"][0].get()}"
+        temp_list.insert(4, title)
+        years = f"{variables["sy"][0].get()}-{variables["ey"][0].get()}"
+        temp_list.insert(5, years)
+
+        episode = f"{variables["episode"][0].get()}"
+        temp_list.insert(6, episode)
+
+        edition = f"{variables["edition"][0].get()}"
+        temp_list.insert(7, edition)
+
+        volume = f"{variables["volume"][0].get()}"
+        temp_list.insert(8, volume)
+
+        # Issue and volume are sometimes the same
+        issue = f"{variables["issue"][0].get()}"
+        temp_list.insert(9, issue)
+
+        type = f"{variables["type"][0].get()}"
+        temp_list.insert(10, type)
+
+        album = f"{variables["album"][0].get()}"
+        temp_list.insert(11, album)
+
+        source = f"{variables["source"][0].get()}"
+        temp_list.insert(12, source)
+
+        isource = f"{variables["isource"][0].get()}"
+        temp_list.insert(13, isource)
+
+        institution = f"{variables["institution"][0].get()}"
+        temp_list.insert(14, institution)
+
+        pub = f"{variables["pub"][0].get()}"
+        temp_list.insert(15, pub)
+
+        ipub = f"{variables["ipub"][0].get()}"
+        temp_list.insert(16, ipub)
+
+        pages = f"{variables["sp"][0].get()}-{variables["ep"][0].get()}"
+        temp_list.insert(17, pages)
+
+        location = f"{variables["city"][0].get()}, {variables["country"][0].get()}"
+        temp_list.insert(18, location)
+
+        doi = f"{variables["doi"][0].get()}"
+        temp_list.insert(19, doi)
+
+        link = f"{url.get()}"
+        temp_list.insert(20, link)
+
+        accessed = f"{variables["accessed"][0].get()}"
+        temp_list.insert(21, accessed)
+
+        formats_a = {
+                
+            author : "n",
+            ititle : "*i*",
+            title : "n",
+            pub: "n",
+            ipub: "*i*",
+            episode : "(b)",
+            edition : "n",
+            volume : "*i*",
+            issue : "*i*",
+            type: "[sb]",
+            source : "n",
+            isource : "*i*",
+            album : "n",
+            location : "n",
+            institution : "*i*",
+            time : "(b)",
+            pages : "(pp.)",
+            years : "(b)",
+            doi : "n",
+            link: "n",
+            accessed: "a"
+
+        }
 
     print(temp_list)
 
@@ -115,26 +203,41 @@ def get_entry(want_clear):
         fn.delete(0, tk.END)
         date.delete(0, tk.END)
         url.delete(0, tk.END)
+
     else:
+        if style_type == "MLA":
+             for i in temp_list:
 
-        for i in temp_list:
-            print(i)
-            print(formats[i])
-            print(i=="" and i==", " and i=="-")
+                if i != "" and i != ", " and i != "-":
+                    if formats_m[i] == "n":
+                        f.insert(tk.END, i + ". ")
+                    elif formats_m[i] == "c":
+                        f.insert(tk.END, i + ", ")
+                    elif formats_m[i] == "*i*":
+                        f.insert(tk.END, f"*{i}*. ")
+                    elif formats_m[i] == "(b)":
+                        f.insert(tk.END, f"({i}). ")
+                    elif formats_m[i] == "pp.":
+                        f.insert(tk.END, f"pp. {i}. ")
+                    elif formats_m[i] == "a":
+                        f.insert(tk.END, f"Accessed {i}")
 
-            if i != "" and i != ", " and i != "-":
-                if formats[i] == "n":
-                    f.insert(tk.END, i + ". ")
-                elif formats[i] == "*i*":
-                    f.insert(tk.END, f"*{i}*. ")
-                elif formats[i] == "(b)":
-                    f.insert(tk.END, f"({i}). ")
-                elif formats[i] == "[sb]":
-                    f.insert(tk.END, f"[{i}]. ")
-                elif formats[i] == "(pp.)":
-                    f.insert(tk.END, f"(pp. {i}). ")
-                elif formats[i] == "a":
-                    f.insert(tk.END, f"Accessed {i}")
+        else:
+            for i in temp_list:
+
+                if i != "" and i != ", " and i != "-":
+                    if formats_a[i] == "n":
+                        f.insert(tk.END, i + ". ")
+                    elif formats_a[i] == "*i*":
+                        f.insert(tk.END, f"*{i}*. ")
+                    elif formats_a[i] == "(b)":
+                        f.insert(tk.END, f"({i}). ")
+                    elif formats_a[i] == "[sb]":
+                        f.insert(tk.END, f"[{i}]. ")
+                    elif formats_a[i] == "(pp.)":
+                        f.insert(tk.END, f"(pp. {i}). ")
+                    elif formats_a[i] == "a":
+                        f.insert(tk.END, f"Accessed {i}")
             
 
 
@@ -170,7 +273,7 @@ root = tk.Tk()
 root.title("Citation Machine")
 root.geometry(f"960x720")
 
-root.title("Lockedin Citations")
+root.title("Lockedin Citation")
 img = tk.PhotoImage(file='lockedin_mascot.png')
 # The icon uses a .ico file so use iconphoto instead
 root.iconphoto(False, img)
@@ -340,7 +443,7 @@ sourcetype.bind("<<ListboxSelect>>", select_type)
 sourcetype.grid(row=1, column=0, padx=40, pady=40)
 
 """
-style = tk.ttk.Combobox(general, values=["APA", "MLA", "Chicago"])
+style = tk.ttk.Combobox(general, values=["APA", "MLA"])
 style.bind("<<ComboboxSelected>>", select_style)
 style.grid(row=2, column=0)
 """
@@ -367,17 +470,19 @@ url.grid(row=5, column=5)
 textframe = tk.Frame(general)
 textframe.grid(row=1, column=2)
 
+chosen_style = tk.StringVar(general, "Style...")
+
 
 f = tk.Text(textframe, wrap="word", width=20, height=10, state="disabled")
 f.grid(row=0, column=0)
 
-style = tk.OptionMenu(textframe, tk.StringVar(general, "Style..."), "APA", "MLA", "Chicago")
+style = tk.OptionMenu(textframe, chosen_style, "APA", "MLA")
 style.grid(row=1, column=0, padx=10, pady=10)
 
-button = tk.Button(general, text="Update", command=lambda:get_entry(False))
+button = tk.Button(general, text="Update", command=lambda:get_entry(False, chosen_style.get()))
 button.grid(row=7, column=2, padx=10, pady=10)
 
-clear = tk.Button(general, text="Clear", command=lambda:get_entry(True))
+clear = tk.Button(general, text="Clear", command=lambda:get_entry(True, chosen_style.get()))
 clear.grid(row=11, column=2, padx=10, pady=6)
 
 
