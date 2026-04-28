@@ -279,9 +279,22 @@ root = tk.Tk()
 root.title("Citation Machine")
 root.geometry(f"960x720")
 
-# THIS SETS THE FONT
+# THIS SETS THE 
 font = Font(file="sniglet.ttf", family="Sniglet")
 root.option_add("*Font", "Sniglet 10")
+
+# Changing the colours
+root.option_add('*Button.Background', "#64c5ba")
+root.option_add('*Button.Foreground', 'white')
+root.option_add('*OptionMenu.background', '#64c5ba')
+root.option_add('*OptionMenu.foreground', 'white')
+root.option_add('*Entry.background', '#64c5ba')
+root.option_add('*Entry.foreground', 'white')
+root.option_add("*Menu*Background", "#64c5ba")
+root.option_add('*Label.background', '#64c5ba')
+root.option_add('*Label.foreground', 'white')
+root.option_add('*Frame.background', '#64c5ba')
+
 
 root.title("Lockedin Citation")
 
