@@ -13,10 +13,12 @@ from taskclass import Task_List, Task
 import tkinter as tk
 from tkinter import messagebox
 import random, json
+from tkextrafont import Font
 
 # ----- Constants -----
 WIDTH = 500
 HEIGHT = 400
+
 
 # ----- Classes -----
 class AppState:
@@ -49,33 +51,30 @@ state = AppState()
 # ----- Intialization -----
 
 root = tk.Tk()
+root.title("Task Window")
 root.geometry(f"{WIDTH}x{HEIGHT}")
-
-root.title("Lockedin Tasks")
-img = tk.PhotoImage(file='lockedin_mascot.png')
-# The icon uses a .ico file so use iconphoto instead
-root.iconphoto(False, img)
-
-# Stops the user from entering full screen
-root.resizable(False, False) 
 
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
+
+# THIS SETS THE FONT
+font = Font(file="sniglet.ttf", family="Sniglet")
+root.option_add("*Font", "Sniglet 10")
 
 main_frame = tk.Frame(root)
 main_frame.grid(row=0, column=0, sticky="nsew")
 main_frame.columnconfigure(0, weight=1)
 
-bg = tk.PhotoImage(file = "task_list.png")
+bg = tk.PhotoImage(file = "g_task_list.png")
 bg_label = tk.Label(main_frame, image = bg)
 bg_label.place(x = 0, y = 0)
 
 # Top Label
-label = tk.Label(main_frame, text="TASKS", font=("Arial", 24))
+label = tk.Label(main_frame, text="TASKS", font=("Sniglet", 24))
 label.grid(row=0, column=0, pady=20)
 
 # Debug Label (Commented out for final)
-screen_debug = tk.Label(main_frame, text=f"Current screen: {state.current_screen}", font=("Arial", 10))
+screen_debug = tk.Label(main_frame, text=f"Current screen: {state.current_screen}", font=("Sniglet", 10))
 screen_debug.grid(row=4, column=0)
 
 # Frames
@@ -232,9 +231,9 @@ def handle_menu(state, button):
         if state.current_screen == "menu": # Moves the screen to the task list menu
             menu_frame.grid_remove()
             task_list_options_frame.grid(row=2, column=0, pady=10)
-            exit_button.config(text="back to menu", font=("Arial", 12))
+            exit_button.config(text="back to menu", font=("Sniglet", 12))
             set_screen(state, "task_list")
-            menu_button.config(text="View Active Tasks", font=("Arial", 18))
+            menu_button.config(text="View Active Tasks", font=("Sniglet", 18))
 
         elif state.current_screen == "task_list": # Moves the screen to the active task list
             render_tasklist("main_button")
@@ -251,7 +250,7 @@ def handle_menu(state, button):
             set_screen(state, "add_task")
             menu_button.grid_remove()
             options_for_changing_values(state, "message")
-            exit_button.config(text="Back to the menu", font=("Arial", 12))
+            exit_button.config(text="Back to the menu", font=("Sniglet", 12))
 
     elif button == "Task_button": # If the button is the completed task button
         
@@ -322,21 +321,21 @@ def render_tasklist(button):
         
     if button == "main_button": # If the active button is clicked, display active tasks.
         if not Task_List.task_list:
-            tk.Label(scrollable_frame, text="YoU HavE No TAsKs :(((((", font=("Arial", 8)).pack(pady=5)
+            tk.Label(scrollable_frame, text="YoU HavE No TAsKs :(((((", font=("Sniglet", 8)).pack(pady=5)
         else:
             for i in Task_List.task_list:
                 task = i
                 g = f"Task: {i.task_message}, created on {i.date_of_creation}.. Due:{i.deadline}."
-                tk.Button(scrollable_frame, text=g, font=("Arial", 8),
+                tk.Button(scrollable_frame, text=g, font=("Sniglet", 8),
                           command=lambda t=task: task_interface(state, t)).pack(pady=5)
     elif button == "Task_button": # If the completed button is clicked, display completed tasks.
         if not Task_List.completed_task_list:
-            tk.Label(scrollable_frame, text="YoU HavE No COMPLETED TAsKs :(((((", font=("Arial", 8)).pack(pady=5)
+            tk.Label(scrollable_frame, text="YoU HavE No COMPLETED TAsKs :(((((", font=("Sniglet", 8)).pack(pady=5)
         else:
             for i in Task_List.completed_task_list:
                 task = i
                 g = f"Task: {i.task_message}, created on {i.date_of_creation}, Completed:{i.date_of_completion}."
-                tk.Button(scrollable_frame, text=g, font=("Arial", 8),
+                tk.Button(scrollable_frame, text=g, font=("Sniglet", 8),
                           command=lambda t=task: task_interface(state, t)).pack(pady=5)
 
 def exit_button_choices(state):
@@ -354,15 +353,15 @@ def exit_button_choices(state):
         task_list_options_frame.grid_remove()
         menu_frame.grid(row=2, column=0, pady=10)
         set_screen(state, "menu")
-        exit_button.config(text="EXIT", font=("Arial", 24))
+        exit_button.config(text="EXIT", font=("Sniglet", 24))
         menu_button.grid(row=1, column=0, pady=10)
-        menu_button.config(text="View Tasks", font=("Arial", 18))
+        menu_button.config(text="View Tasks", font=("Sniglet", 18))
 
     elif state.current_screen in ("active_task_list", "completed_task_list"): # If the current screen is the completed/active task lists, take the user back to the task list menu.
         task_list_scroll_frame.grid_remove()
         task_list_options_frame.grid(row=2, column=0, pady=10)
         set_screen(state, "task_list")
-        exit_button.config(text="back outside the menu", font=("Arial", 12))
+        exit_button.config(text="back outside the menu", font=("Sniglet", 12))
         completed_task_list_button.grid(row=1, column=0, pady=5)
         menu_button.grid(row=1, column=0, pady=10)
         task_listlabel.grid_remove()
@@ -396,7 +395,7 @@ def exit_button_choices(state):
     elif state.current_screen == "add_task": # If the user is in any menu relating to adding a task (entering values), take them back to the menu.
         enter_a_value_frame.grid_remove()
         menu_frame.grid(row=2, column=0, pady=10)
-        exit_button.config(text="back to menu", font=("Arial", 12))
+        exit_button.config(text="back to menu", font=("Sniglet", 12))
         menu_button.grid(row=1, column=0, pady=10)
         set_screen(state, "menu")
 
@@ -473,56 +472,56 @@ within_a_task_active_frame.columnconfigure(2, weight=0)
 
 # Main / Navigation
 add_button = tk.Button(
-    menu_frame, text="Add Task", font=("Arial", 18),
+    menu_frame, text="Add Task", font=("Sniglet", 18),
     command=lambda: handle_menu(state, "add_button")
 )
 
 menu_button = tk.Button(
-    main_frame, text="View Tasks", font=("Arial", 18),
+    main_frame, text="View Tasks", font=("Sniglet", 18),
     command=lambda: handle_menu(state, "main_button")
 )
 
 completed_task_list_button = tk.Button(
-    task_list_options_frame, text="View Completed Tasks", font=("Arial", 15),
+    task_list_options_frame, text="View Completed Tasks", font=("Sniglet", 15),
     command=lambda: handle_menu(state, "Task_button")
 )
 
 exit_button = tk.Button(
-    main_frame, text="EXIT", font=("Arial", 24),
+    main_frame, text="EXIT", font=("Sniglet", 24),
     bg="red", command=lambda: exit_button_choices(state)
 )
 
 
 # Task Actions
 edit_button = tk.Button(
-    within_a_task_active_frame, text="Edit Task", font=("Arial", 18),
+    within_a_task_active_frame, text="Edit Task", font=("Sniglet", 18),
     command=lambda: task_options_for_interface("edit", state)
 )
 
 check_button = tk.Button(
-    within_a_task_active_frame, text="Check Task", font=("Arial", 18), bg="green",
+    within_a_task_active_frame, text="Check Task", font=("Sniglet", 18), bg="green",
     command=lambda: task_options_for_interface("check", state)
 )
 
 delete_button = tk.Button(
-    within_a_task_active_frame, text="Delete Task", font=("Arial", 18), bg="red",
+    within_a_task_active_frame, text="Delete Task", font=("Sniglet", 18), bg="red",
     command=lambda: task_options_for_interface("delete", state)
 )
 
 uncheck_button = tk.Button(
-    within_a_task_completed_frame, text="Uncheck Task", font=("Arial", 18),
+    within_a_task_completed_frame, text="Uncheck Task", font=("Sniglet", 18),
     command=lambda: task_options_for_interface("uncheck", state)
 )
 
 
 # Edit Options
 deadline_button = tk.Button(
-    editing_menu_frame, text="Edit deadline", font=("Arial", 18),
+    editing_menu_frame, text="Edit deadline", font=("Sniglet", 18),
     command=lambda: options_for_changing_values(state, "deadline")
 )
 
 message_button = tk.Button(
-    editing_menu_frame, text="Edit message", font=("Arial", 18),
+    editing_menu_frame, text="Edit message", font=("Sniglet", 18),
     command=lambda: options_for_changing_values(state, "message")
 )
 
@@ -532,12 +531,12 @@ message_button = tk.Button(
 # =========================
 
 task_info_label = tk.Label(
-    within_a_task_active_frame, text="", font=("Arial", 9),
+    within_a_task_active_frame, text="", font=("Sniglet", 9),
     justify="left", wraplength=400
 )
 
 task_info_label2 = tk.Label(
-    within_a_task_completed_frame, text="", font=("Arial", 9),
+    within_a_task_completed_frame, text="", font=("Sniglet", 9),
     justify="left", wraplength=400
 )
 
@@ -546,7 +545,7 @@ task_listlabel = tk.Label(
 )
 
 instructions_msg = tk.Label(
-    enter_a_value_frame, text="Enter the date as month/day/year", font=("Arial", 8)
+    enter_a_value_frame, text="Enter the date as month/day/year", font=("Sniglet", 8)
 )
 
 
@@ -555,7 +554,7 @@ instructions_msg = tk.Label(
 # =========================
 
 inputbox = tk.Entry(
-    enter_a_value_frame, font=("Arial", 14),
+    enter_a_value_frame, font=("Sniglet", 14),
     textvariable=my_value
 )
 
