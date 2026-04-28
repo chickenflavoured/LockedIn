@@ -61,6 +61,16 @@ root.rowconfigure(0, weight=1)
 font = Font(file="sniglet.ttf", family="Sniglet")
 root.option_add("*Font", "Sniglet 10")
 
+# Colour display changes
+root.option_add('*Button.Background', "#6c96cf")
+root.option_add('*Button.Foreground', 'white')
+root.option_add('*Entry.background', '#6c96cf')
+root.option_add('*Entry.foreground', 'white')
+root.option_add('*Label.background', '#6c96cf')
+root.option_add('*Label.foreground', 'white')
+root.option_add('*Frame.background', '#6c96cf')
+root.option_add('*Canvas.background', '#6c96cf')
+
 main_frame = tk.Frame(root)
 main_frame.grid(row=0, column=0, sticky="nsew")
 main_frame.columnconfigure(0, weight=1)
