@@ -1,6 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
+from tkextrafont import Font
+import pyperclip
 
+# def copy_citation(citation):
+
+#     print(citation)
 
 def get_entry(want_clear, style_type):
 
@@ -10,9 +15,6 @@ def get_entry(want_clear, style_type):
 
     # Temporary list that will hold all the citation features
     temp_list = []
-
-    # Make another list - instead of f.insert - insert into another list. Then, use a for loop to run through that new list, and at the end insert the value into f list with a period or comma after 
-    # ^ this is how to get rid of the issue of the periods and commas because right now, if you leave an empty space, it will still input a comma/period
     
     if style_type == "MLA":
 
@@ -240,6 +242,10 @@ def get_entry(want_clear, style_type):
                         f.insert(tk.END, f"Accessed {i}")
             
 
+    
+    # copy = tk.Button(general, text="Copy Citation", command=lambda:copy_citation(f))
+    # copy.grid(row=12, column=3, padx=10, pady=6)
+
 
     f.config(state="disabled")
 
@@ -273,22 +279,23 @@ root = tk.Tk()
 root.title("Citation Machine")
 root.geometry(f"960x720")
 
+# THIS SETS THE FONT
+font = Font(file="sniglet.ttf", family="Sniglet")
+root.option_add("*Font", "Sniglet 10")
+
 root.title("Lockedin Citation")
-img = tk.PhotoImage(file='lockedin_mascot.png')
-# The icon uses a .ico file so use iconphoto instead
-root.iconphoto(False, img)
 
 # Stops the user from entering full screen
 root.resizable(False, False) 
 
-bg = tk.PhotoImage(file = "citations.png")
+bg = tk.PhotoImage(file = "g_citations.png")
 bg_label = tk.Label(root, image = bg)
 bg_label.place(x = 0, y = 0)
 
 general = tk.Frame(root)
 general.grid(row=1, column=0)
 
-bg2 = tk.PhotoImage(file = "citations.png")
+bg2 = tk.PhotoImage(file = "g_citations.png")
 bg2_label = tk.Label(general, image = bg2)
 bg2_label.place(x = 0, y = 0)
 
@@ -484,6 +491,5 @@ button.grid(row=7, column=2, padx=10, pady=10)
 
 clear = tk.Button(general, text="Clear", command=lambda:get_entry(True, chosen_style.get()))
 clear.grid(row=11, column=2, padx=10, pady=6)
-
 
 root.mainloop()
