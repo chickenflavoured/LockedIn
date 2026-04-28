@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from timers import Timer
 import threading
-# from tkextrafont import Font
+from tkextrafont import Font
 
 
 window = tk.Tk()
@@ -13,14 +13,13 @@ WIDTH = 400
 # Window display size
 window.geometry(f"{WIDTH}x{HEIGHT}")
 
-bg = tk.PhotoImage(file = "study_timers.png")
+bg = tk.PhotoImage(file = "g_study_timers.png")
 bg_label = tk.Label(window, image = bg)
 bg_label.place(x = 0, y = 0)
 
-window.title("Lockedin Timers")
-img = tk.PhotoImage(file='lockedin_mascot.png')
-# The icon uses a .ico file so use iconphoto instead
-window.iconphoto(False, img)
+# THIS SETS THE FONT
+font = Font(file="sniglet.ttf", family="Sniglet")
+window.option_add("*Font", "Sniglet 10")
 
 # Stops the user from entering full screen
 window.resizable(False, False) 
