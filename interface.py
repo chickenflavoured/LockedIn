@@ -22,6 +22,8 @@ windows_on = [False, False, False, False]
 font = Font(file="sniglet.ttf", family="Sniglet")
 window.option_add("*Font", "Sniglet 10")
 
+window.option_add('*Button.Background', "#f9cf6b")
+
 bg = tk.PhotoImage(file = "g_main_interface.png")
 bg_label = tk.Label(window, image = bg)
 bg_label.place(x = 0, y = 0)
