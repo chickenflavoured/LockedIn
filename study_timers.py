@@ -21,6 +21,13 @@ bg_label.place(x = 0, y = 0)
 font = Font(file="sniglet.ttf", family="Sniglet")
 window.option_add("*Font", "Sniglet 10")
 
+window.option_add('*Button.Background', "#d06caa")
+window.option_add('*Button.Foreground', 'white')
+window.option_add('*Entry.background', '#d06caa')
+window.option_add('*Entry.foreground', 'white')
+window.option_add('*Label.background', '#d06caa')
+window.option_add('*Label.foreground', 'white')
+
 # Stops the user from entering full screen
 window.resizable(False, False) 
 
