@@ -473,7 +473,7 @@ clear = tk.Button(general, text="Clear", command=lambda:get_entry(True, chosen_s
 clear.grid(row=11, column=2, padx=10, pady=6)
     
 copy = tk.Button(general, text="Copy Citation", command=lambda:copy_citation(f.get("1.0", "end-1c")))
-copy.grid(row=12, column=3, padx=10, pady=6)
+copy.place(x=450, y=210)
 
 
 root.mainloop()
