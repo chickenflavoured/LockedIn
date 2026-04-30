@@ -194,12 +194,9 @@ def get_entry(want_clear, style_type):
 
         }
 
-    print(temp_list)
-
     if want_clear:
         for j in variables:
-            if j not in ("media", "isep", "podtype", "degree"):
-                variables[j][0].delete(0, tk.END)
+            variables[j][0].delete(0, tk.END)
 
         ln.delete(0, tk.END)
         fn.delete(0, tk.END)
@@ -260,16 +257,6 @@ def select_type(event):
         tk.Label(fields, text=field).grid(row=i, column=0)
         for j, widget in enumerate(variables[fields_used[field]]):
             widget.grid(row=i, column=j + 1)
-
-
-
-
-def select_style(event):
-    pass
-
-
-def render_citation(**kwargs):
-    pass
 
 
 root = tk.Tk()
@@ -346,18 +333,6 @@ variables = {
     "ey": [tk.Entry(fields)],
     "doi": [tk.Entry(fields)],
     "accessed": [tk.Entry(fields)],
-
-    "media": [tk.Radiobutton(fields, text="Post", value="post"),
-              tk.Radiobutton(fields, text="Comment", value="comment")],
-
-    "isep": [tk.Radiobutton(fields, text="Whole podcast", value="podcast"),
-                tk.Radiobutton(fields, text="Single episode", value="episode")],
-
-    "podtype": [tk.Radiobutton(fields, text="Audio", value="audio"),
-                tk.Radiobutton(fields, text="Video", value="video")],
-    
-    "degree": [tk.Radiobutton(fields, text="Thesis", value="thesis"),
-                tk.Radiobutton(fields, text="Dissertation", value="dissertation")]
 }
 
 sourcetypes = {
@@ -394,7 +369,6 @@ sourcetypes = {
     },
 
     "Social media": {
-        "Post or comment": "media",
         "Post title": "ititle",
         "Content": "ititle",
         "Website name": "source",
@@ -428,8 +402,6 @@ sourcetypes = {
     },
 
     "Podcast": {
-        "Audio or video": "podtype",
-        "Episode or podcast": "isep",
         "Podcast title": "isource",
         "Episode title": "title",
         "Episode number": "episode",
@@ -447,7 +419,6 @@ sourcetypes = {
     },
 
     "Thesis or dissertation": {
-        "Thesis or dissertation": "degree",
         "Title": "ititle",
         "Institution": "institution",
         "Source name": "source"
