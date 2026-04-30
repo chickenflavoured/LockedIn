@@ -3,9 +3,9 @@ from tkinter import ttk
 from tkextrafont import Font
 import pyperclip
 
-# def copy_citation(citation):
+def copy_citation(citation):
 
-#     print(citation)
+    pyperclip.copy(citation)
 
 def get_entry(want_clear, style_type):
 
@@ -242,9 +242,6 @@ def get_entry(want_clear, style_type):
                         f.insert(tk.END, f"Accessed {i}")
             
 
-    
-    # copy = tk.Button(general, text="Copy Citation", command=lambda:copy_citation(f))
-    # copy.grid(row=12, column=3, padx=10, pady=6)
 
 
     f.config(state="disabled")
@@ -279,11 +276,10 @@ root = tk.Tk()
 root.title("Citation Machine")
 root.geometry(f"960x720")
 
-# THIS SETS THE 
+# THIS SETS THE FONT
 font = Font(file="sniglet.ttf", family="Sniglet")
 root.option_add("*Font", "Sniglet 10")
 
-# Changing the colours
 root.option_add('*Button.Background', "#64c5ba")
 root.option_add('*Button.Foreground', 'white')
 root.option_add('*OptionMenu.background', '#64c5ba')
@@ -504,5 +500,9 @@ button.grid(row=7, column=2, padx=10, pady=10)
 
 clear = tk.Button(general, text="Clear", command=lambda:get_entry(True, chosen_style.get()))
 clear.grid(row=11, column=2, padx=10, pady=6)
+    
+copy = tk.Button(general, text="Copy Citation", command=lambda:copy_citation(f.get("1.0", "end-1c")))
+copy.grid(row=12, column=3, padx=10, pady=6)
+
 
 root.mainloop()
