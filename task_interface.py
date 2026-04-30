@@ -85,7 +85,7 @@ label.grid(row=0, column=0, pady=20)
 
 # Debug Label (Commented out for final)
 screen_debug = tk.Label(main_frame, text=f"Current screen: {state.current_screen}", font=("Sniglet", 10))
-screen_debug.grid(row=4, column=0)
+#screen_debug.grid(row=4, column=0)
 
 # Frames
 menu_frame = tk.Frame(main_frame)
