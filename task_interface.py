@@ -40,14 +40,6 @@ class AppState:
         
 state = AppState()
 
-# ----- Test Cases -----
-
-#_ = Task("Finish homeworgfggk", "1234326890", "01/22/2027")
-
-
-#for i in range(9):
-    #_ = Task("Finish hom" + str(i) + "ework", "12345" + str(i) + "6890", "01/22/2027")
-
 # ----- Intialization -----
 
 root = tk.Tk()
@@ -331,7 +323,7 @@ def render_tasklist(button):
         
     if button == "main_button": # If the active button is clicked, display active tasks.
         if not Task_List.task_list:
-            tk.Label(scrollable_frame, text="YoU HavE No TAsKs :(((((", font=("Sniglet", 8)).pack(pady=5)
+            tk.Label(scrollable_frame, text="You have no tasks.", font=("Sniglet", 8)).pack(pady=5)
         else:
             for i in Task_List.task_list:
                 task = i
@@ -340,7 +332,7 @@ def render_tasklist(button):
                           command=lambda t=task: task_interface(state, t)).pack(pady=5)
     elif button == "Task_button": # If the completed button is clicked, display completed tasks.
         if not Task_List.completed_task_list:
-            tk.Label(scrollable_frame, text="YoU HavE No COMPLETED TAsKs :(((((", font=("Sniglet", 8)).pack(pady=5)
+            tk.Label(scrollable_frame, text="You have no completed tasks.", font=("Sniglet", 8)).pack(pady=5)
         else:
             for i in Task_List.completed_task_list:
                 task = i

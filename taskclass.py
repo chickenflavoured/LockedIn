@@ -104,7 +104,7 @@ class Task_List():
         }
     
     @staticmethod
-    def load_from_json(filename="savedfile.json"):
+    def load_from_json(filename="task_saveddata.json"):
         """
         Loads the dictionaries from json and converts them back into tasks, restoring data from previous use.
         Args:
@@ -139,7 +139,7 @@ class Task_List():
         """
         data = Task_List.to_a_dictionary()
         print(f"Data being saved is: {data}") 
-        with open("savedfile.json", "w") as f:
+        with open("task_saveddata.json", "w") as f:
             json.dump(data, f, indent=4)
 
     @staticmethod
